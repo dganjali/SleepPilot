@@ -139,6 +139,40 @@ export default function TrendsScreen() {
               </View>
             </View>
           )}
+          
+          {/* Additional Audio Analytics */}
+          <View style={styles.additionalMetrics}>
+            <View style={styles.metricRow}>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Dynamic Range</Text>
+                <Text style={styles.metricValue}>32.4 dB</Text>
+              </View>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>SNR Ratio</Text>
+                <Text style={styles.metricValue}>18.7 dB</Text>
+              </View>
+            </View>
+            <View style={styles.metricRow}>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Frequency Stability</Text>
+                <Text style={styles.metricValue}>94.2%</Text>
+              </View>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Harmonic Distortion</Text>
+                <Text style={styles.metricValue}>0.8%</Text>
+              </View>
+            </View>
+            <View style={styles.metricRow}>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>Sleep Cycles</Text>
+                <Text style={styles.metricValue}>4.2</Text>
+              </View>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricLabel}>REM Duration</Text>
+                <Text style={styles.metricValue}>89 min</Text>
+              </View>
+            </View>
+          </View>
         </LinearGradient>
       </View>
     </View>
@@ -174,6 +208,30 @@ export default function TrendsScreen() {
               <View style={styles.eventRow}>
                 <Text style={styles.eventLabel}>Sleep Latency</Text>
                 <Text style={styles.eventValue}>18 min</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Wake After Sleep</Text>
+                <Text style={styles.eventValue}>23 min</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Total Sleep Time</Text>
+                <Text style={styles.eventValue}>6.8 hrs</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Sleep Onset</Text>
+                <Text style={styles.eventValue}>11:42 PM</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Final Awakening</Text>
+                <Text style={styles.eventValue}>6:30 AM</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Heart Rate Variability</Text>
+                <Text style={styles.eventValue}>42 ms</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Respiratory Rate</Text>
+                <Text style={styles.eventValue}>14.2/min</Text>
               </View>
             </View>
           ) : (
@@ -214,32 +272,58 @@ export default function TrendsScreen() {
   );
 
   const generateSoundLevelData = () => {
-    // Generate realistic sound level data for visualization
+    // Generate realistic sound level data with skinnier peaks and more dormant areas
     const data = [];
     const hours = 8; // Assume 8 hours of sleep
+    const steps = hours * 8; // 8 data points per hour (every 7.5 minutes) for smoother curves
     
-    for (let i = 0; i <= hours; i += 0.25) {
-      let baseLevel = 25;
+    // Define 5 specific peak times (in hours) with varying intensities
+    const peakTimes = [1.5, 2.8, 4.2, 5.5, 6.8];
+    const peakIntensities = [48, 55, 52, 58, 45]; // Higher peak intensities
+    const peakWidths = [0.15, 0.12, 0.18, 0.14, 0.16]; // Skinnier peaks (in hours)
+    
+    for (let i = 0; i <= steps; i++) {
+      const time = i * 0.125; // Convert to hours (7.5 minute intervals)
+      let baseLevel = 22; // Lower base quiet level for more dormant areas
       
-      // Add realistic sleep patterns
-      if (i < 1) {
-        baseLevel += Math.random() * 15 + 5;
-      } else if (i > hours - 1) {
-        baseLevel += Math.random() * 20 + 10;
+      // Add realistic sleep patterns with more variation
+      if (time < 1) {
+        // Falling asleep phase - gradual decrease with variation
+        const falloff = (1 - time) * 12;
+        const variation = Math.sin(time * 8) * 3 + (Math.random() - 0.5) * 4;
+        baseLevel += falloff + variation;
+      } else if (time > hours - 1) {
+        // Waking up phase - gradual increase with variation
+        const rise = (time - (hours - 1)) * 10;
+        const variation = Math.sin(time * 6) * 2 + (Math.random() - 0.5) * 3;
+        baseLevel += rise + variation;
       } else {
-        baseLevel += Math.random() * 8;
-        
-        // Random noise events
-        if (Math.random() < 0.1) {
-          baseLevel += Math.random() * 25 + 15;
-        }
+        // Deep sleep phase - more variation in dormant areas
+        const deepSleepVariation = Math.sin(time * 2.5) * 2 + Math.sin(time * 1.3) * 1.5;
+        const randomVariation = (Math.random() - 0.5) * 4;
+        baseLevel += deepSleepVariation + randomVariation;
       }
       
-      baseLevel += (Math.random() - 0.5) * 5;
+      // Add the 5 specific skinnier peaks
+      peakTimes.forEach((peakTime, index) => {
+        const distance = Math.abs(time - peakTime);
+        const peakWidth = peakWidths[index];
+        
+        if (distance < peakWidth) {
+          // Much skinnier peaks with sharper decay
+          const peakEffect = peakIntensities[index] * Math.exp(-distance * 8); // Sharper exponential decay
+          baseLevel += peakEffect;
+        }
+      });
       
+      // Add micro-variations for more realistic dormant areas
+      const microVariation = Math.sin(time * 12) * 0.8 + Math.sin(time * 7) * 0.6;
+      baseLevel += microVariation;
+      
+      // Ensure realistic bounds
       data.push({
-        time: i,
-        level: Math.max(20, Math.min(60, baseLevel))
+        time: time,
+        level: Math.max(18, Math.min(70, baseLevel))
       });
     }
     
@@ -324,9 +408,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginLeft: 12,
   },
-  chartContainer: {
-    marginBottom: 15,
-  },
+
   soundMetrics: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -390,101 +472,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#EBEBF599',
   },
-  soundSection: {
-    paddingHorizontal: 24,
-    marginBottom: 24,
-  },
-  soundCard: {
-    backgroundColor: 'rgba(44, 44, 46, 0.8)',
-    borderRadius: 16,
-    padding: 20,
-  },
-  soundCardGradient: {
-    borderRadius: 16,
-    padding: 20,
-  },
-  soundHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  soundTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginLeft: 12,
-  },
-  chartContainer: {
-    backgroundColor: 'rgba(44, 44, 46, 0.8)',
-    borderRadius: 16,
-    padding: 20,
-    alignItems: 'center',
-  },
-  soundMetrics: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
-  soundMetricItem: {
-    alignItems: 'center',
-  },
-  metricLabel: {
-    fontSize: 12,
-    color: '#EBEBF599',
-    marginBottom: 4,
-  },
-  metricValue: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  eventsSection: {
-    paddingHorizontal: 24,
-    marginBottom: 24,
-  },
-  eventsCard: {
-    backgroundColor: 'rgba(44, 44, 46, 0.8)',
-    borderRadius: 16,
-    padding: 20,
-  },
-  eventsCardGradient: {
-    borderRadius: 16,
-    padding: 20,
-  },
-  eventsHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  eventsTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginLeft: 12,
-  },
-  eventsContent: {
-    paddingLeft: 10,
-  },
-  eventRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  eventLabel: {
-    fontSize: 14,
-    color: '#EBEBF599',
-  },
-  eventValue: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#FFFFFF',
-  },
-  noDataText: {
-    fontSize: 14,
-    color: '#EBEBF599',
-    textAlign: 'center',
-    paddingVertical: 20,
-  },
+
+
   recommendationsSection: {
     paddingHorizontal: 24,
     paddingBottom: 32,

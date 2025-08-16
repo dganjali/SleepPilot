@@ -101,7 +101,7 @@ const Cloud = forwardRef(({ x, y, size, onUpdate }, ref) => {
     return () => clearInterval(rotateAnimation);
   }, []);
 
-  // Apply cursor influence - clouds are attracted to cursor
+  // Apply cursor influence - clouds move away from cursor
   const applyCursorInfluence = (cursorX, cursorY) => {
     const distance = Math.sqrt(
       Math.pow(cursorX - translateX.value, 2) + 
@@ -112,11 +112,11 @@ const Cloud = forwardRef(({ x, y, size, onUpdate }, ref) => {
     const influenceStrength = Math.max(0, 1 - (distance / maxDistance));
     
     if (influenceStrength > 0) {
-      // Calculate direction to cursor
-      const angle = Math.atan2(cursorY - translateY.value, cursorX - translateX.value);
+      // Calculate direction AWAY from cursor (opposite direction)
+      const angle = Math.atan2(translateY.value - cursorY, translateX.value - cursorX);
       const force = influenceStrength * cursorInfluence;
       
-      // Apply force to velocity (not position)
+      // Apply force to velocity (moving away from cursor)
       velocityX.value += Math.cos(angle) * force;
       velocityY.value += Math.sin(angle) * force;
       
