@@ -1,0 +1,16 @@
+numpy
+torch
+torchaudio
+gymnasium
+stable-baselines3
+huggingface-hub
+scikit-learn
+librosa
+matplotlib
+seaborn
+pandas
+scipy
+kagglehub
+soundfile
+tqdm
+ 
