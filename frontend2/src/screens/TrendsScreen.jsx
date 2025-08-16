@@ -1,315 +1,286 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { VictoryChart, VictoryBar, VictoryAxis, VictoryTheme, VictoryGroup } from 'victory-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { 
   TrendingUp, 
-  Calendar, 
-  BarChart3, 
-  Moon,
-  TrendingDown,
-  Minus
+  Activity, 
+  Brain, 
+  Moon, 
+  Zap,
+  BarChart3,
+  Volume2
 } from 'lucide-react-native';
+import { VictoryChart, VictoryLine, VictoryAxis, VictoryArea, VictoryScatter, VictoryTheme } from 'victory-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function TrendsScreen() {
-  const [selectedPeriod, setSelectedPeriod] = useState('week');
-  const [selectedMetric, setSelectedMetric] = useState('sleep_score');
+  const route = useRoute();
+  const navigation = useNavigation();
+  const [sleepScore, setSleepScore] = useState(null);
+  const [audioData, setAudioData] = useState(null);
+  const [pipelineResults, setPipelineResults] = useState(null);
 
-  const periods = [
-    { key: 'week', label: 'Week', icon: Calendar },
-    { key: 'month', label: 'Month', icon: BarChart3 },
-    { key: 'quarter', label: 'Quarter', icon: TrendingUp },
-  ];
-
-  const metrics = [
-    { key: 'sleep_score', label: 'Sleep Score', icon: Moon },
-    { key: 'duration', label: 'Duration', icon: TrendingUp },
-    { key: 'efficiency', label: 'Efficiency', icon: BarChart3 },
-    { key: 'deep_sleep', label: 'Deep Sleep', icon: TrendingDown },
-  ];
-
-  const trendData = {
-    sleep_score: {
-      current: 87,
-      previous: 82,
-      trend: 'up',
-      change: '+5',
-      percentage: '+6.1%',
-    },
-    duration: {
-      current: '7h 23m',
-      previous: '7h 15m',
-      trend: 'up',
-      change: '+8m',
-      percentage: '+1.8%',
-    },
-    efficiency: {
-      current: '94%',
-      previous: '91%',
-      trend: 'up',
-      change: '+3%',
-      percentage: '+3.3%',
-    },
-    deep_sleep: {
-      current: '2h 15m',
-      previous: '2h 30m',
-      trend: 'down',
-      change: '-15m',
-      percentage: '-10%',
-    },
-  };
-
-  const weeklyData = [
-    { day: 'Mon', score: 85, duration: 7.2, efficiency: 92, deepSleep: 2.1 },
-    { day: 'Tue', score: 88, duration: 7.5, efficiency: 94, deepSleep: 2.3 },
-    { day: 'Wed', score: 82, duration: 6.8, efficiency: 89, deepSleep: 1.9 },
-    { day: 'Thu', score: 90, duration: 7.8, efficiency: 96, deepSleep: 2.4 },
-    { day: 'Fri', score: 87, duration: 7.3, efficiency: 93, deepSleep: 2.2 },
-    { day: 'Sat', score: 89, duration: 8.1, efficiency: 95, deepSleep: 2.5 },
-    { day: 'Sun', score: 87, duration: 7.4, efficiency: 94, deepSleep: 2.1 },
-  ];
-
-  const getTrendIcon = (trend) => {
-    switch (trend) {
-      case 'up': return TrendingUp;
-      case 'down': return TrendingDown;
-      default: return Minus;
+  useEffect(() => {
+    // Get data passed from Dashboard
+    if (route.params) {
+      setSleepScore(route.params.sleepScore);
+      setAudioData(route.params.audioData);
+      setPipelineResults(route.params.pipelineResults);
     }
-  };
+  }, [route.params]);
 
-  const getTrendColor = (trend) => {
-    switch (trend) {
-      case 'up': return '#34C759';
-      case 'down': return '#FF3B30';
-      default: return '#FF9500';
-    }
-  };
-
-  const renderPeriodButton = (period) => {
-    const Icon = period.icon;
-    const isActive = selectedPeriod === period.key;
-    
-    return (
-      <TouchableOpacity
-        key={period.key}
-        onPress={() => setSelectedPeriod(period.key)}
-        style={[
-          styles.periodButton,
-          isActive && styles.periodButtonActive
-        ]}
+  const renderSleepScoreHeader = () => (
+    <View style={styles.sleepScoreHeader}>
+      <LinearGradient
+        colors={['rgba(139, 92, 246, 0.3)', 'rgba(167, 139, 250, 0.2)']}
+        style={styles.scoreGradient}
       >
-        <Icon size={20} color={isActive ? '#000000' : '#EBEBF599'} />
-        <Text style={[
-          styles.periodButtonText,
-          isActive && styles.periodButtonTextActive
-        ]}>
-          {period.label}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderMetricButton = (metric) => {
-    const Icon = metric.icon;
-    const isActive = selectedMetric === metric.key;
-    
-    return (
-      <TouchableOpacity
-        key={metric.key}
-        onPress={() => setSelectedMetric(metric.key)}
-        style={[
-          styles.metricButton,
-          isActive && styles.metricButtonActive
-        ]}
-      >
-        <Icon size={20} color={isActive ? '#000000' : '#EBEBF599'} />
-        <Text style={[
-          styles.metricButtonText,
-          isActive && styles.metricButtonTextActive
-        ]}>
-          {metric.label}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderTrendCard = (metricKey) => {
-    const data = trendData[metricKey];
-    const TrendIcon = getTrendIcon(data.trend);
-    const trendColor = getTrendColor(data.trend);
-
-    return (
-      <View key={metricKey} style={styles.trendCard}>
-        <View style={styles.trendHeader}>
-          <Text style={styles.trendLabel}>{metrics.find(m => m.key === metricKey)?.label}</Text>
-          <View style={[styles.trendBadge, { backgroundColor: `${trendColor}20` }]}>
-            <TrendIcon size={16} color={trendColor} />
-            <Text style={[styles.trendBadgeText, { color: trendColor }]}>
-              {data.percentage}
+        <View style={styles.scoreContent}>
+          <View style={styles.scoreIcon}>
+            <Brain size={40} color="#8B5CF6" />
+          </View>
+          <View style={styles.scoreText}>
+            <Text style={styles.scoreLabel}>Your Sleep Score</Text>
+            <Text style={styles.scoreValue}>{sleepScore || '--'}/100</Text>
+            <Text style={styles.scoreCategory}>
+              {getScoreCategory(sleepScore)}
             </Text>
           </View>
         </View>
-        
-        <View style={styles.trendValues}>
-          <Text style={styles.trendCurrent}>{data.current}</Text>
-          <View style={styles.trendComparison}>
-            <Text style={styles.trendPrevious}>vs {data.previous}</Text>
-            <Text style={[styles.trendChange, { color: trendColor }]}>
-              {data.change}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
+      </LinearGradient>
+    </View>
+  );
 
-  const renderWeeklyChart = () => {
-    const getChartData = () => {
-      return weeklyData.map((day, index) => {
-        let value, color;
-        switch (selectedMetric) {
-          case 'sleep_score':
-            value = day.score;
-            color = '#A890FE';
-            break;
-          case 'duration':
-            value = day.duration;
-            color = '#34C759';
-            break;
-          case 'efficiency':
-            value = day.efficiency;
-            color = '#FF9500';
-            break;
-          case 'deep_sleep':
-            value = day.deepSleep;
-            color = '#C9B9FF';
-            break;
-          default:
-            value = day.score;
-            color = '#A890FE';
-        }
-        return { x: day.day, y: value, fill: color };
-      });
-    };
-
-    return (
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>Weekly Progress</Text>
-        <VictoryChart
-          theme={VictoryTheme.material}
-          width={width - 88}
-          height={200}
-          padding={{ top: 20, bottom: 50, left: 50, right: 20 }}
+  const renderSoundLevelVisualization = () => (
+    <View style={styles.soundSection}>
+      <Text style={styles.sectionTitle}>Sound Level Analysis</Text>
+      <View style={styles.soundCard}>
+        <LinearGradient
+          colors={['rgba(255, 107, 107, 0.2)', 'rgba(255, 107, 107, 0.1)']}
+          style={styles.soundCardGradient}
         >
-          <VictoryAxis
-            style={{
-              axis: { stroke: '#EBEBF599' },
-              tickLabels: { fill: '#EBEBF599', fontSize: 12 }
-            }}
-          />
-          <VictoryAxis
-            dependentAxis
-            style={{
-              axis: { stroke: '#EBEBF599' },
-              tickLabels: { fill: '#EBEBF599', fontSize: 12 }
-            }}
-          />
-          <VictoryBar
-            data={getChartData()}
-            style={{
-              data: {
-                fill: ({ datum }) => datum.fill,
-                stroke: '#000000',
-                strokeWidth: 1,
-              }
-            }}
-            barWidth={20}
-            cornerRadius={4}
-          />
-        </VictoryChart>
+          <View style={styles.soundHeader}>
+            <Volume2 size={24} color="#FF6B6B" />
+            <Text style={styles.soundTitle}>Sleep Audio Patterns</Text>
+          </View>
+          
+          {/* Sound Level Chart */}
+          <View style={styles.chartContainer}>
+            <VictoryChart
+              width={width - 80}
+              height={200}
+              theme={VictoryTheme.material}
+              padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+            >
+              <VictoryAxis
+                dependentAxis
+                label="Sound Level (dB)"
+                style={{
+                  axis: { stroke: '#EBEBF599' },
+                  axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                  tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                }}
+              />
+              <VictoryAxis
+                label="Time (hours)"
+                style={{
+                  axis: { stroke: '#EBEBF599' },
+                  axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                  tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                }}
+              />
+              <VictoryLine
+                data={generateSoundLevelData()}
+                x="time"
+                y="level"
+                style={{
+                  data: { stroke: '#FF6B6B', strokeWidth: 2 }
+                }}
+              />
+              <VictoryArea
+                data={generateSoundLevelData()}
+                x="time"
+                y="level"
+                style={{
+                  data: { fill: 'rgba(255, 107, 107, 0.3)' }
+                }}
+              />
+            </VictoryChart>
+          </View>
+
+          {/* Sound Metrics */}
+          {audioData && (
+            <View style={styles.soundMetrics}>
+              <View style={styles.soundMetricItem}>
+                <Text style={styles.metricLabel}>Peak Level</Text>
+                <Text style={styles.metricValue}>{audioData.peakLevel?.toFixed(1) || '--'} dB</Text>
+              </View>
+              <View style={styles.soundMetricItem}>
+                <Text style={styles.metricLabel}>Average Level</Text>
+                <Text style={styles.metricValue}>{audioData.averageLevel?.toFixed(1) || '--'} dB</Text>
+              </View>
+              <View style={styles.soundMetricItem}>
+                <Text style={styles.metricLabel}>Quiet Periods</Text>
+                <Text style={styles.metricValue}>{audioData.quietPeriods || '--'}%</Text>
+              </View>
+              <View style={styles.soundMetricItem}>
+                <Text style={styles.metricLabel}>Noise Events</Text>
+                <Text style={styles.metricValue}>{audioData.noiseEvents || '--'}</Text>
+              </View>
+            </View>
+          )}
+        </LinearGradient>
       </View>
-    );
+    </View>
+  );
+
+  const renderSleepEventsAnalysis = () => (
+    <View style={styles.eventsSection}>
+      <Text style={styles.sectionTitle}>Sleep Events Analysis</Text>
+      <View style={styles.eventsCard}>
+        <LinearGradient
+          colors={['rgba(34, 197, 94, 0.2)', 'rgba(34, 197, 94, 0.1)']}
+          style={styles.eventsCardGradient}
+        >
+          <View style={styles.eventsHeader}>
+            <Activity size={24} color="#22C55E" />
+            <Text style={styles.eventsTitle}>Detected Sleep Events</Text>
+          </View>
+          
+          {pipelineResults ? (
+            <View style={styles.eventsContent}>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Apnea Events</Text>
+                <Text style={styles.eventValue}>5</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Sleep Efficiency</Text>
+                <Text style={styles.eventValue}>72%</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Deep Sleep</Text>
+                <Text style={styles.eventValue}>18%</Text>
+              </View>
+              <View style={styles.eventRow}>
+                <Text style={styles.eventLabel}>Sleep Latency</Text>
+                <Text style={styles.eventValue}>18 min</Text>
+              </View>
+            </View>
+          ) : (
+            <Text style={styles.noDataText}>No sleep events data available</Text>
+          )}
+        </LinearGradient>
+      </View>
+    </View>
+  );
+
+  const renderRecommendations = () => (
+    <View style={styles.recommendationsSection}>
+      <Text style={styles.sectionTitle}>Personalized Recommendations</Text>
+      <View style={styles.recommendationsCard}>
+        <LinearGradient
+          colors={['rgba(59, 130, 246, 0.2)', 'rgba(59, 130, 246, 0.1)']}
+          style={styles.recommendationsCardGradient}
+        >
+          <View style={styles.recommendationsHeader}>
+            <Zap size={24} color="#3B82F6" />
+            <Text style={styles.recommendationsTitle}>Action Items</Text>
+          </View>
+          
+          {pipelineResults?.recommendations ? (
+            <View style={styles.recommendationsList}>
+              {pipelineResults.recommendations.map((rec, index) => (
+                <View key={index} style={styles.recommendationItem}>
+                  <Text style={styles.recommendationText}>• {rec}</Text>
+                </View>
+              ))}
+            </View>
+          ) : (
+            <Text style={styles.noDataText}>No recommendations available</Text>
+          )}
+        </LinearGradient>
+      </View>
+    </View>
+  );
+
+  const generateSoundLevelData = () => {
+    // Generate realistic sound level data for visualization
+    const data = [];
+    const hours = 8; // Assume 8 hours of sleep
+    
+    for (let i = 0; i <= hours; i += 0.25) {
+      let baseLevel = 25;
+      
+      // Add realistic sleep patterns
+      if (i < 1) {
+        baseLevel += Math.random() * 15 + 5;
+      } else if (i > hours - 1) {
+        baseLevel += Math.random() * 20 + 10;
+      } else {
+        baseLevel += Math.random() * 8;
+        
+        // Random noise events
+        if (Math.random() < 0.1) {
+          baseLevel += Math.random() * 25 + 15;
+        }
+      }
+      
+      baseLevel += (Math.random() - 0.5) * 5;
+      
+      data.push({
+        time: i,
+        level: Math.max(20, Math.min(60, baseLevel))
+      });
+    }
+    
+    return data;
+  };
+
+  const getScoreCategory = (score) => {
+    if (!score) return '--';
+    if (score >= 90) return 'Excellent';
+    if (score >= 75) return 'Good';
+    if (score >= 60) return 'Fair';
+    return 'Poor';
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Trends</Text>
-          <Text style={styles.headerSubtitle}>
-            Track your sleep patterns and progress over time
-          </Text>
-        </View>
-
-        {/* Period Selector */}
-        <View style={styles.periodSection}>
-          <Text style={styles.sectionTitle}>Time Period</Text>
-          <View style={styles.periodButtons}>
-            {periods.map(renderPeriodButton)}
-          </View>
-        </View>
-
-        {/* Metric Selector */}
-        <View style={styles.metricSection}>
-          <Text style={styles.sectionTitle}>Metric</Text>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.metricButtons}
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Sleep Score Header */}
+        {renderSleepScoreHeader()}
+        
+        {/* Sound Level Visualization */}
+        {renderSoundLevelVisualization()}
+        
+        {/* Sleep Events Analysis */}
+        {renderSleepEventsAnalysis()}
+        
+        {/* Recommendations */}
+        {renderRecommendations()}
+        
+        {/* Back to Dashboard Button */}
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => navigation.navigate('Dashboard')}
+        >
+          <LinearGradient
+            colors={['#8B5CF6', '#A78BFA']}
+            style={styles.backButtonGradient}
           >
-            {metrics.map(renderMetricButton)}
-          </ScrollView>
-        </View>
-
-        {/* Trend Overview */}
-        <View style={styles.trendsSection}>
-          <Text style={styles.sectionTitle}>Trend Overview</Text>
-          <View style={styles.trendsGrid}>
-            {Object.keys(trendData).map(renderTrendCard)}
-          </View>
-        </View>
-
-        {/* Weekly Chart */}
-        <View style={styles.chartSection}>
-          {renderWeeklyChart()}
-        </View>
-
-        {/* Insights */}
-        <View style={styles.insightsSection}>
-          <Text style={styles.sectionTitle}>Key Insights</Text>
-          <View style={styles.insightCard}>
-            <View style={styles.insightHeader}>
-              <TrendingUp size={20} color="#34C759" />
-              <Text style={styles.insightTitle}>Consistent Improvement</Text>
-            </View>
-            <Text style={styles.insightDescription}>
-              Your sleep score has improved by 6.1% this week. You're maintaining a consistent 
-              sleep schedule and following recommendations effectively.
-            </Text>
-          </View>
-          
-          <View style={styles.insightCard}>
-            <View style={styles.insightHeader}>
-              <TrendingDown size={20} color="#FF3B30" />
-              <Text style={styles.insightTitle}>Deep Sleep Decline</Text>
-            </View>
-            <Text style={styles.insightDescription}>
-              Deep sleep has decreased by 10% this week. Consider reducing evening screen time 
-              and maintaining a cooler room temperature.
-            </Text>
-          </View>
-        </View>
+            <Text style={styles.backButtonText}>Back to Dashboard</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -320,25 +291,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 24,
-  },
-  headerTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 8,
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#EBEBF599',
-    lineHeight: 22,
-  },
-  periodSection: {
-    paddingHorizontal: 24,
-    marginBottom: 24,
+  scrollView: {
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 18,
@@ -346,123 +300,119 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 16,
   },
-  periodButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  periodButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
-    backgroundColor: 'rgba(44, 44, 46, 0.8)',
-  },
-  periodButtonActive: {
-    backgroundColor: '#A890FE',
-  },
-  periodButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#EBEBF599',
-  },
-  periodButtonTextActive: {
-    color: '#000000',
-    fontWeight: '600',
-  },
-  metricSection: {
+  soundSection: {
     paddingHorizontal: 24,
     marginBottom: 24,
   },
-  metricButtons: {
-    gap: 12,
-  },
-  metricButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
-    backgroundColor: 'rgba(44, 44, 46, 0.8)',
-  },
-  metricButtonActive: {
-    backgroundColor: '#A890FE',
-  },
-  metricButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#EBEBF599',
-  },
-  metricButtonTextActive: {
-    color: '#000000',
-    fontWeight: '600',
-  },
-  trendsSection: {
-    paddingHorizontal: 24,
-    marginBottom: 24,
-  },
-  trendsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  trendCard: {
-    width: (width - 64) / 2,
+  soundCard: {
     backgroundColor: 'rgba(44, 44, 46, 0.8)',
     borderRadius: 16,
     padding: 20,
-    marginBottom: 16,
   },
-  trendHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
+  soundCardGradient: {
+    borderRadius: 16,
+    padding: 20,
   },
-  trendLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#EBEBF599',
-  },
-  trendBadge: {
+  soundHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    marginBottom: 16,
   },
-  trendBadgeText: {
-    fontSize: 12,
+  soundTitle: {
+    fontSize: 18,
     fontWeight: '600',
-  },
-  trendValues: {
-    alignItems: 'flex-start',
-  },
-  trendCurrent: {
-    fontSize: 24,
-    fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 8,
+    marginLeft: 12,
   },
-  trendComparison: {
+  chartContainer: {
+    marginBottom: 15,
+  },
+  soundMetrics: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-around',
+    marginTop: 15,
   },
-  trendPrevious: {
+  soundMetricItem: {
+    alignItems: 'center',
+  },
+  metricLabel: {
     fontSize: 12,
     color: '#EBEBF599',
+    marginTop: 5,
   },
-  trendChange: {
-    fontSize: 12,
-    fontWeight: '600',
+  metricValue: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    marginTop: 2,
   },
-  chartSection: {
+  eventsSection: {
     paddingHorizontal: 24,
     marginBottom: 24,
+  },
+  sleepScoreHeader: {
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    paddingBottom: 24,
+  },
+  scoreGradient: {
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+  },
+  scoreContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  scoreIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#F3E8FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scoreText: {
+    marginLeft: 16,
+  },
+  scoreLabel: {
+    fontSize: 14,
+    color: '#EBEBF599',
+    marginBottom: 4,
+  },
+  scoreValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  scoreCategory: {
+    fontSize: 14,
+    color: '#EBEBF599',
+  },
+  soundSection: {
+    paddingHorizontal: 24,
+    marginBottom: 24,
+  },
+  soundCard: {
+    backgroundColor: 'rgba(44, 44, 46, 0.8)',
+    borderRadius: 16,
+    padding: 20,
+  },
+  soundCardGradient: {
+    borderRadius: 16,
+    padding: 20,
+  },
+  soundHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  soundTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginLeft: 12,
   },
   chartContainer: {
     backgroundColor: 'rgba(44, 44, 46, 0.8)',
@@ -470,38 +420,122 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  chartTitle: {
+  soundMetrics: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+  },
+  soundMetricItem: {
+    alignItems: 'center',
+  },
+  metricLabel: {
+    fontSize: 12,
+    color: '#EBEBF599',
+    marginBottom: 4,
+  },
+  metricValue: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 20,
-    alignSelf: 'flex-start',
   },
-  insightsSection: {
+  eventsSection: {
     paddingHorizontal: 24,
-    paddingBottom: 32,
+    marginBottom: 24,
   },
-  insightCard: {
+  eventsCard: {
     backgroundColor: 'rgba(44, 44, 46, 0.8)',
     borderRadius: 16,
     padding: 20,
-    marginBottom: 16,
   },
-  insightHeader: {
+  eventsCardGradient: {
+    borderRadius: 16,
+    padding: 20,
+  },
+  eventsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  insightTitle: {
-    fontSize: 16,
+  eventsTitle: {
+    fontSize: 18,
     fontWeight: '600',
     color: '#FFFFFF',
     marginLeft: 12,
   },
-  insightDescription: {
+  eventsContent: {
+    paddingLeft: 10,
+  },
+  eventRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  eventLabel: {
+    fontSize: 14,
+    color: '#EBEBF599',
+  },
+  eventValue: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#FFFFFF',
+  },
+  noDataText: {
+    fontSize: 14,
+    color: '#EBEBF599',
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
+  recommendationsSection: {
+    paddingHorizontal: 24,
+    paddingBottom: 32,
+  },
+  recommendationsCard: {
+    backgroundColor: 'rgba(44, 44, 46, 0.8)',
+    borderRadius: 16,
+    padding: 20,
+  },
+  recommendationsCardGradient: {
+    borderRadius: 16,
+    padding: 20,
+  },
+  recommendationsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  recommendationsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginLeft: 12,
+  },
+  recommendationsList: {
+    // No specific styles needed for list items, they will be handled by the Text style
+  },
+  recommendationItem: {
+    marginBottom: 8,
+  },
+  recommendationText: {
     fontSize: 14,
     color: '#EBEBF599',
     lineHeight: 20,
-    marginLeft: 32,
+  },
+  backButton: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  backButtonGradient: {
+    width: '100%',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
 });

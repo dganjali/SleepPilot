@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { VictoryChart, VictoryLine, VictoryAxis, VictoryArea, VictoryScatter, VictoryTheme, VictoryBar, VictoryGroup } from 'victory-native';
 import { 
   Lightbulb, 
   Plus,
@@ -19,13 +20,113 @@ import {
   Clock,
   CheckCircle2,
   Circle,
-  Grid
+  Grid,
+  TrendingUp,
+  Activity,
+  Brain,
+  Zap
 } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
 export default function RecommendationsScreen() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [layer3Data, setLayer3Data] = useState(null);
+
+  // Generate realistic layer 3 RL training data
+  const generateLayer3Data = () => {
+    const data = {
+      trainingProgress: [],
+      rewardConvergence: [],
+      environmentOptimization: [],
+      sleepQualityImprovement: [],
+      policyUpdates: []
+    };
+
+    // Training progress over episodes
+    for (let i = 0; i < 100; i++) {
+      const episode = i + 1;
+      const progress = Math.min(1, episode / 50); // Converges around episode 50
+      const noise = (Math.random() - 0.5) * 0.1;
+      
+      data.trainingProgress.push({
+        episode,
+        progress: Math.max(0, Math.min(1, progress + noise))
+      });
+    }
+
+    // Reward convergence
+    for (let i = 0; i < 100; i++) {
+      const step = i;
+      const baselineReward = -2.0;
+      const optimalReward = 3.5;
+      const convergenceRate = 0.05;
+      const noise = (Math.random() - 0.5) * 0.3;
+      
+      const reward = baselineReward + (optimalReward - baselineReward) * (1 - Math.exp(-step * convergenceRate)) + noise;
+      
+      data.rewardConvergence.push({
+        step,
+        reward: Math.max(-3, Math.min(4, reward))
+      });
+    }
+
+    // Environment optimization over time
+    for (let i = 0; i < 50; i++) {
+      const time = i * 0.5; // 0.5 hour intervals
+      const tempOptimal = 20.0;
+      const lightOptimal = 0.22;
+      const noiseOptimal = 0.23;
+      
+      // Simulate RL agent learning optimal values
+      const learningRate = 0.1;
+      const temp = 24.5 + (tempOptimal - 24.5) * Math.min(1, i * learningRate) + (Math.random() - 0.5) * 0.5;
+      const light = 0.8 + (lightOptimal - 0.8) * Math.min(1, i * learningRate) + (Math.random() - 0.5) * 0.1;
+      const noise = 0.7 + (noiseOptimal - 0.7) * Math.min(1, i * learningRate) + (Math.random() - 0.5) * 0.1;
+      
+      data.environmentOptimization.push({
+        time,
+        temperature: Math.max(18, Math.min(26, temp)),
+        lightIntensity: Math.max(0.1, Math.min(1.0, light)),
+        noiseLevel: Math.max(0.1, Math.min(1.0, noise))
+      });
+    }
+
+    // Sleep quality improvement
+    for (let i = 0; i < 30; i++) {
+      const day = i + 1;
+      const baselineScore = 65;
+      const optimalScore = 92;
+      const improvementRate = 0.15;
+      const noise = (Math.random() - 0.5) * 3;
+      
+      const score = baselineScore + (optimalScore - baselineScore) * (1 - Math.exp(-day * improvementRate)) + noise;
+      
+      data.sleepQualityImprovement.push({
+        day,
+        score: Math.max(60, Math.min(95, score))
+      });
+    }
+
+    // Policy updates frequency
+    for (let i = 0; i < 100; i++) {
+      const step = i;
+      const baseFrequency = 0.8;
+      const decay = Math.exp(-step * 0.02);
+      const noise = (Math.random() - 0.5) * 0.2;
+      
+      data.policyUpdates.push({
+        step,
+        frequency: Math.max(0.1, Math.min(1.0, baseFrequency * decay + noise))
+      });
+    }
+
+    return data;
+  };
+
+  useEffect(() => {
+    setLayer3Data(generateLayer3Data());
+  }, []);
 
   const recommendations = [
     {
@@ -277,6 +378,250 @@ export default function RecommendationsScreen() {
           </ScrollView>
         </View>
 
+        {/* Layer 3 RL Analytics */}
+        {layer3Data && (
+          <View style={styles.analyticsSection}>
+            <Text style={styles.sectionTitle}>Layer 3 RL Training Analytics</Text>
+            
+            {/* Training Progress */}
+            <View style={styles.analyticsCard}>
+              <LinearGradient
+                colors={['rgba(139, 92, 246, 0.2)', 'rgba(167, 139, 250, 0.1)']}
+                style={styles.analyticsCardGradient}
+              >
+                <View style={styles.analyticsHeader}>
+                  <TrendingUp size={24} color="#8B5CF6" />
+                  <Text style={styles.analyticsTitle}>Training Progress</Text>
+                </View>
+                <View style={styles.chartContainer}>
+                  <VictoryChart
+                    width={width - 80}
+                    height={200}
+                    theme={VictoryTheme.material}
+                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                  >
+                    <VictoryAxis
+                      dependentAxis
+                      label="Progress"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryAxis
+                      label="Episode"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryLine
+                      data={layer3Data.trainingProgress}
+                      x="episode"
+                      y="progress"
+                      style={{
+                        data: { stroke: '#8B5CF6', strokeWidth: 2 }
+                      }}
+                    />
+                    <VictoryArea
+                      data={layer3Data.trainingProgress}
+                      x="episode"
+                      y="progress"
+                      style={{
+                        data: { fill: 'rgba(139, 92, 246, 0.3)' }
+                      }}
+                    />
+                  </VictoryChart>
+                </View>
+              </LinearGradient>
+            </View>
+
+            {/* Reward Convergence */}
+            <View style={styles.analyticsCard}>
+              <LinearGradient
+                colors={['rgba(34, 197, 94, 0.2)', 'rgba(34, 197, 94, 0.1)']}
+                style={styles.analyticsCardGradient}
+              >
+                <View style={styles.analyticsHeader}>
+                  <Activity size={24} color="#22C55E" />
+                  <Text style={styles.analyticsTitle}>Reward Convergence</Text>
+                </View>
+                <View style={styles.chartContainer}>
+                  <VictoryChart
+                    width={width - 80}
+                    height={200}
+                    theme={VictoryTheme.material}
+                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                  >
+                    <VictoryAxis
+                      dependentAxis
+                      label="Reward"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryAxis
+                      label="Training Step"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryLine
+                      data={layer3Data.rewardConvergence}
+                      x="step"
+                      y="reward"
+                      style={{
+                        data: { stroke: '#22C55E', strokeWidth: 2 }
+                      }}
+                    />
+                    <VictoryScatter
+                      data={layer3Data.rewardConvergence}
+                      x="step"
+                      y="reward"
+                      size={2}
+                      style={{
+                        data: { fill: '#22C55E' }
+                      }}
+                    />
+                  </VictoryChart>
+                </View>
+              </LinearGradient>
+            </View>
+
+            {/* Environment Optimization */}
+            <View style={styles.analyticsCard}>
+              <LinearGradient
+                colors={['rgba(59, 130, 246, 0.2)', 'rgba(59, 130, 246, 0.1)']}
+                style={styles.analyticsCardGradient}
+              >
+                <View style={styles.analyticsHeader}>
+                  <Brain size={24} color="#3B82F6" />
+                  <Text style={styles.analyticsTitle}>Environment Optimization</Text>
+                </View>
+                <View style={styles.chartContainer}>
+                  <VictoryChart
+                    width={width - 80}
+                    height={200}
+                    theme={VictoryTheme.material}
+                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                  >
+                    <VictoryAxis
+                      dependentAxis
+                      label="Value"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryAxis
+                      label="Time (hours)"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryGroup>
+                      <VictoryLine
+                        data={layer3Data.environmentOptimization}
+                        x="time"
+                        y="temperature"
+                        style={{
+                          data: { stroke: '#FF6B6B', strokeWidth: 2 }
+                        }}
+                      />
+                      <VictoryLine
+                        data={layer3Data.environmentOptimization}
+                        x="time"
+                        y="lightIntensity"
+                        style={{
+                          data: { stroke: '#4ECDC4', strokeWidth: 2 }
+                        }}
+                      />
+                      <VictoryLine
+                        data={layer3Data.environmentOptimization}
+                        x="time"
+                        y="noiseLevel"
+                        style={{
+                          data: { stroke: '#45B7D1', strokeWidth: 2 }
+                        }}
+                      />
+                    </VictoryGroup>
+                  </VictoryChart>
+                  <View style={styles.legendContainer}>
+                    <View style={styles.legendItem}>
+                      <View style={[styles.legendDot, { backgroundColor: '#FF6B6B' }]} />
+                      <Text style={styles.legendText}>Temperature</Text>
+                    </View>
+                    <View style={styles.legendItem}>
+                      <View style={[styles.legendDot, { backgroundColor: '#4ECDC4' }]} />
+                      <Text style={styles.legendText}>Light</Text>
+                    </View>
+                    <View style={styles.legendItem}>
+                      <View style={[styles.legendDot, { backgroundColor: '#45B7D1' }]} />
+                      <Text style={styles.legendText}>Noise</Text>
+                    </View>
+                  </View>
+                </View>
+              </LinearGradient>
+            </View>
+
+            {/* Sleep Quality Improvement */}
+            <View style={styles.analyticsCard}>
+              <LinearGradient
+                colors={['rgba(168, 85, 247, 0.2)', 'rgba(168, 85, 247, 0.1)']}
+                style={styles.analyticsCardGradient}
+              >
+                <View style={styles.analyticsHeader}>
+                  <Zap size={24} color="#A855F7" />
+                  <Text style={styles.analyticsTitle}>Sleep Quality Improvement</Text>
+                </View>
+                <View style={styles.chartContainer}>
+                  <VictoryChart
+                    width={width - 80}
+                    height={200}
+                    theme={VictoryTheme.material}
+                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                  >
+                    <VictoryAxis
+                      dependentAxis
+                      label="Sleep Score"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryAxis
+                      label="Day"
+                      style={{
+                        axis: { stroke: '#EBEBF599' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        tickLabels: { fill: '#EBEBF599', fontSize: 10 }
+                      }}
+                    />
+                    <VictoryBar
+                      data={layer3Data.sleepQualityImprovement}
+                      x="day"
+                      y="score"
+                      style={{
+                        data: { fill: '#A855F7' }
+                      }}
+                    />
+                  </VictoryChart>
+                </View>
+              </LinearGradient>
+            </View>
+          </View>
+        )}
+
         {/* Recommendations List */}
         <View style={styles.recommendationsSection}>
           <Text style={styles.sectionTitle}>
@@ -401,6 +746,53 @@ const styles = StyleSheet.create({
   },
   categoryFiltersContent: {
     gap: 8,
+  },
+  analyticsSection: {
+    paddingHorizontal: 24,
+    marginBottom: 32,
+  },
+  analyticsCard: {
+    backgroundColor: 'rgba(44, 44, 46, 0.8)',
+    borderRadius: 16,
+    marginBottom: 20,
+    overflow: 'hidden',
+  },
+  analyticsCardGradient: {
+    padding: 20,
+  },
+  analyticsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  analyticsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginLeft: 12,
+  },
+  chartContainer: {
+    alignItems: 'center',
+  },
+  legendContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 15,
+    paddingHorizontal: 20,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  legendDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 8,
+  },
+  legendText: {
+    fontSize: 12,
+    color: '#EBEBF599',
   },
   recommendationsSection: {
     paddingHorizontal: 24,

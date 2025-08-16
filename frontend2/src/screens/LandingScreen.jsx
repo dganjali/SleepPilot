@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, forwardRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useState } from 'react';
 import {
   View,
   Text,
@@ -225,6 +225,42 @@ export default function LandingScreen() {
     },
   ]);
 
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [hasProcessed, setHasProcessed] = useState(false);
+  const [processingStage, setProcessingStage] = useState('');
+  const [progressWidth, setProgressWidth] = useState(0);
+
+  const handleProcessVideo = () => {
+    // Simulate processing demo video through RL backend
+    setIsProcessing(true);
+    setHasProcessed(true);
+    setProgressWidth(0);
+    
+    // Simulate different processing stages
+    const stages = [
+      'Loading demo video...',
+      'Analyzing sleep patterns...',
+      'Processing through AI models...',
+      'Running RL optimization...',
+      'Generating recommendations...',
+      'Complete!'
+    ];
+    
+    let currentStage = 0;
+    const processInterval = setInterval(() => {
+      if (currentStage < stages.length) {
+        setProcessingStage(stages[currentStage]);
+        setProgressWidth(((currentStage + 1) / stages.length) * 100);
+        currentStage++;
+      } else {
+        clearInterval(processInterval);
+        setIsProcessing(false);
+        setProcessingStage('Processing complete!');
+        setProgressWidth(100);
+      }
+    }, 1500);
+  };
+
   // Pan responder for cursor interaction
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -291,7 +327,6 @@ export default function LandingScreen() {
               resizeMode="contain"
             />
           </View>
-          <Text style={styles.logoText}>IGNITION</Text>
         </View>
 
         {/* One Liner */}
