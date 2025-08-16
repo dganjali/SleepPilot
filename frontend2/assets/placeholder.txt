@@ -1,0 +1,8 @@
+This is a placeholder file.
+The app needs these assets:
+- icon.png (1024x1024)
+- splash.png (1242x2436) 
+- adaptive-icon.png (1024x1024)
+- favicon.png (32x32)
+
+You can create these or use placeholder images for now.
