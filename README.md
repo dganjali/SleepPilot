@@ -218,7 +218,7 @@ npm start
 - **Smooth Animations**: Engaging user interactions
 - **Offline Capability**: Core functionality without internet
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -247,7 +247,7 @@ Each layer can be configured through JSON configuration files:
 - **Layer 2**: `config.py` for RL environment settings
 - **Layer 3**: `config.py` for API and optimization parameters
 
-## 📈 Performance & Scalability
+## Performance & Scalability
 
 ### Optimization Features
 - **Model Quantization**: Optimized inference for mobile devices
@@ -261,7 +261,7 @@ Each layer can be configured through JSON configuration files:
 - **Database Optimization**: Efficient data storage and retrieval
 - **Mobile Optimization**: Lightweight models for edge devices
 
-## 🧪 Testing
+## Testing
 
 ### Unit Tests
 ```bash
@@ -296,7 +296,7 @@ cd layer3rl
 python performance_test.py
 ```
 
-## 📚 API Documentation
+## API Documentation
 
 ### Layer 3 API Endpoints
 
@@ -351,7 +351,7 @@ Get RL-optimized environment recommendations.
 }
 ```
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -385,7 +385,7 @@ logging.basicConfig(level=logging.DEBUG)
 console.log('Debug mode enabled');
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these steps:
 
@@ -406,14 +406,14 @@ We welcome contributions! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Research Community**: Sleep science and AI research papers
 - **Open Source**: PyTorch, React Native, and other libraries
 - **Medical Advisors**: Sleep medicine professionals
 - **Beta Testers**: Early users and feedback providers
 
-## 🔮 Roadmap
+## Roadmap
 
 ### Phase 1 (Current)
 - ✅ Basic ML sleep scoring
