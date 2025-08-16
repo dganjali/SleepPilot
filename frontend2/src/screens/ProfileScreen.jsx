@@ -298,7 +298,9 @@ export default function ProfileScreen() {
         </View>
 
         {/* Profile Section */}
-        {renderProfileSection()}
+        <View style={styles.profileSectionContainer}>
+          {renderProfileSection()}
+        </View>
 
         {/* Save Button */}
         {isEditing && (
@@ -356,6 +358,10 @@ const styles = StyleSheet.create({
   section: {
     paddingHorizontal: 24,
     marginBottom: 24,
+    marginTop: 16,
+  },
+  profileSectionContainer: {
+    marginTop: 32,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -382,15 +388,16 @@ const styles = StyleSheet.create({
   },
   profileRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+    gap: 16,
   },
   profileLabel: {
     fontSize: 16,
     fontWeight: '500',
     color: '#D1D5DB',
-    flex: 1,
+    minWidth: 100,
+    flexShrink: 0,
   },
   profileInput: {
     flex: 1,
@@ -402,10 +409,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: 'rgba(139, 92, 246, 0.3)',
-    marginLeft: 16,
     textAlign: 'right',
+    minWidth: 120,
   },
   profileValue: {
+    flex: 1,
     fontSize: 16,
     color: '#FFFFFF',
     paddingVertical: 12,
@@ -414,9 +422,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: 'rgba(139, 92, 246, 0.2)',
-    marginLeft: 16,
     textAlign: 'right',
-    minWidth: 80,
+    minWidth: 120,
   },
   editButton: {
     marginTop: 24,

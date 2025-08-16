@@ -33,7 +33,7 @@ export default function RecommendationsScreen() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [layer3Data, setLayer3Data] = useState(null);
 
-  // Generate realistic layer 3 RL training data
+  // Generate scuffed, realistic layer 3 RL training data
   const generateLayer3Data = () => {
     const data = {
       trainingProgress: [],
@@ -43,81 +43,149 @@ export default function RecommendationsScreen() {
       policyUpdates: []
     };
 
-    // Training progress over episodes
+    // Training progress over episodes - more scuffed with plateaus and setbacks
     for (let i = 0; i < 100; i++) {
       const episode = i + 1;
-      const progress = Math.min(1, episode / 50); // Converges around episode 50
-      const noise = (Math.random() - 0.5) * 0.1;
+      let progress = Math.min(1, episode / 50); // Base convergence
+      
+      // Add realistic training setbacks and plateaus
+      if (episode > 20 && episode < 35) {
+        progress *= 0.7; // Training plateau
+      }
+      if (episode > 45 && episode < 55) {
+        progress *= 0.85; // Another setback
+      }
+      
+      // Add more aggressive noise and micro-fluctuations
+      const noise = (Math.random() - 0.5) * 0.15;
+      const microFluctuation = Math.sin(episode * 0.3) * 0.05;
+      const randomSpike = Math.random() < 0.02 ? (Math.random() * 0.2) : 0; // Occasional random spikes
       
       data.trainingProgress.push({
         episode,
-        progress: Math.max(0, Math.min(1, progress + noise))
+        progress: Math.max(0, Math.min(1, progress + noise + microFluctuation + randomSpike))
       });
     }
 
-    // Reward convergence
+    // Reward convergence - more erratic with learning failures
     for (let i = 0; i < 100; i++) {
       const step = i;
       const baselineReward = -2.0;
       const optimalReward = 3.5;
       const convergenceRate = 0.05;
-      const noise = (Math.random() - 0.5) * 0.3;
       
-      const reward = baselineReward + (optimalReward - baselineReward) * (1 - Math.exp(-step * convergenceRate)) + noise;
+      let reward = baselineReward + (optimalReward - baselineReward) * (1 - Math.exp(-step * convergenceRate));
+      
+      // Add learning failures and recovery patterns
+      if (step > 30 && step < 40) {
+        reward *= 0.6; // Learning failure period
+      }
+      if (step > 60 && step < 70) {
+        reward *= 0.8; // Another setback
+      }
+      
+      // More aggressive noise and irregular patterns
+      const noise = (Math.random() - 0.5) * 0.4;
+      const irregularPattern = Math.sin(step * 0.7) * 0.3 + Math.cos(step * 0.4) * 0.2;
+      const randomDropout = Math.random() < 0.03 ? (Math.random() * -1.5) : 0; // Occasional dramatic drops
       
       data.rewardConvergence.push({
         step,
-        reward: Math.max(-3, Math.min(4, reward))
+        reward: Math.max(-3, Math.min(4, reward + noise + irregularPattern + randomDropout))
       });
     }
 
-    // Environment optimization over time
+    // Environment optimization over time - more chaotic learning
     for (let i = 0; i < 50; i++) {
       const time = i * 0.5; // 0.5 hour intervals
       const tempOptimal = 20.0;
       const lightOptimal = 0.22;
       const noiseOptimal = 0.23;
       
-      // Simulate RL agent learning optimal values
+      // Simulate RL agent learning with more realistic imperfections
       const learningRate = 0.1;
-      const temp = 24.5 + (tempOptimal - 24.5) * Math.min(1, i * learningRate) + (Math.random() - 0.5) * 0.5;
-      const light = 0.8 + (lightOptimal - 0.8) * Math.min(1, i * learningRate) + (Math.random() - 0.5) * 0.1;
-      const noise = 0.7 + (noiseOptimal - 0.7) * Math.min(1, i * learningRate) + (Math.random() - 0.5) * 0.1;
+      let temp = 24.5 + (tempOptimal - 24.5) * Math.min(1, i * learningRate);
+      let light = 0.8 + (lightOptimal - 0.8) * Math.min(1, i * learningRate);
+      let noise = 0.7 + (noiseOptimal - 0.7) * Math.min(1, i * learningRate);
+      
+      // Add learning oscillations and overcorrections
+      if (i > 15 && i < 25) {
+        temp += Math.sin(i * 0.8) * 2; // Temperature oscillations
+        light += Math.sin(i * 0.6) * 0.15; // Light oscillations
+      }
+      
+      // Add more aggressive noise and system instabilities
+      const tempNoise = (Math.random() - 0.5) * 0.8;
+      const lightNoise = (Math.random() - 0.5) * 0.15;
+      const noiseNoise = (Math.random() - 0.5) * 0.15;
+      
+      // Add occasional system glitches
+      const tempGlitch = Math.random() < 0.05 ? (Math.random() * 3 - 1.5) : 0;
+      const lightGlitch = Math.random() < 0.05 ? (Math.random() * 0.3 - 0.15) : 0;
       
       data.environmentOptimization.push({
         time,
-        temperature: Math.max(18, Math.min(26, temp)),
-        lightIntensity: Math.max(0.1, Math.min(1.0, light)),
-        noiseLevel: Math.max(0.1, Math.min(1.0, noise))
+        temperature: Math.max(18, Math.min(26, temp + tempNoise + tempGlitch)),
+        lightIntensity: Math.max(0.1, Math.min(1.0, light + lightNoise + lightGlitch)),
+        noiseLevel: Math.max(0.1, Math.min(1.0, noise + noiseNoise))
       });
     }
 
-    // Sleep quality improvement
+    // Sleep quality improvement - more realistic with bad days and plateaus
     for (let i = 0; i < 30; i++) {
       const day = i + 1;
       const baselineScore = 65;
       const optimalScore = 92;
       const improvementRate = 0.15;
-      const noise = (Math.random() - 0.5) * 3;
       
-      const score = baselineScore + (optimalScore - baselineScore) * (1 - Math.exp(-day * improvementRate)) + noise;
+      let score = baselineScore + (optimalScore - baselineScore) * (1 - Math.exp(-day * improvementRate));
+      
+      // Add realistic bad days and plateaus
+      if (day === 8 || day === 15 || day === 22) {
+        score *= 0.85; // Bad days
+      }
+      if (day > 18 && day < 25) {
+        score *= 0.95; // Plateau period
+      }
+      
+      // More aggressive noise and daily variations
+      const noise = (Math.random() - 0.5) * 4;
+      const dailyVariation = Math.sin(day * 0.5) * 2;
+      const randomBadDay = Math.random() < 0.1 ? (Math.random() * -8) : 0; // Occasional really bad days
       
       data.sleepQualityImprovement.push({
         day,
-        score: Math.max(60, Math.min(95, score))
+        score: Math.max(60, Math.min(95, score + noise + dailyVariation + randomBadDay))
       });
     }
 
-    // Policy updates frequency
+    // Policy updates frequency - more erratic with system crashes
     for (let i = 0; i < 100; i++) {
       const step = i;
       const baseFrequency = 0.8;
       const decay = Math.exp(-step * 0.02);
-      const noise = (Math.random() - 0.5) * 0.2;
+      
+      let frequency = baseFrequency * decay;
+      
+      // Add system crashes and recovery patterns
+      if (step > 25 && step < 30) {
+        frequency *= 0.3; // System crash
+      }
+      if (step > 50 && step < 55) {
+        frequency *= 0.5; // Another crash
+      }
+      if (step > 75 && step < 80) {
+        frequency *= 0.4; // Final crash
+      }
+      
+      // More aggressive noise and irregular patterns
+      const noise = (Math.random() - 0.5) * 0.3;
+      const irregularPattern = Math.sin(step * 0.9) * 0.2 + Math.cos(step * 0.3) * 0.15;
+      const randomSpike = Math.random() < 0.02 ? (Math.random() * 0.4) : 0; // Occasional recovery spikes
       
       data.policyUpdates.push({
         step,
-        frequency: Math.max(0.1, Math.min(1.0, baseFrequency * decay + noise))
+        frequency: Math.max(0.1, Math.min(1.0, frequency + noise + irregularPattern + randomSpike))
       });
     }
 
@@ -395,25 +463,25 @@ export default function RecommendationsScreen() {
                 </View>
                 <View style={styles.chartContainer}>
                   <VictoryChart
-                    width={width - 80}
-                    height={200}
+                    width={width - 30}
+                    height={280}
                     theme={VictoryTheme.material}
-                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                    padding={{ top: 50, bottom: 70, left: 80, right: 50 }}
                   >
                     <VictoryAxis
                       dependentAxis
                       label="Progress"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
-                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12, fontWeight: '600' },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
                     />
                     <VictoryAxis
                       label="Episode"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
-                        axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
+                        axisLabel: { fill: '#FFFFFF', fontSize: 12, fontWeight: '600' },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
                     />
@@ -422,7 +490,7 @@ export default function RecommendationsScreen() {
                       x="episode"
                       y="progress"
                       style={{
-                        data: { stroke: '#8B5CF6', strokeWidth: 2 }
+                        data: { stroke: '#8B5CF6', strokeWidth: 1.8, strokeDasharray: '3,3' }
                       }}
                     />
                     <VictoryArea
@@ -430,7 +498,7 @@ export default function RecommendationsScreen() {
                       x="episode"
                       y="progress"
                       style={{
-                        data: { fill: 'rgba(139, 92, 246, 0.3)' }
+                        data: { fill: 'rgba(139, 92, 246, 0.2)' }
                       }}
                     />
                   </VictoryChart>
@@ -450,16 +518,16 @@ export default function RecommendationsScreen() {
                 </View>
                 <View style={styles.chartContainer}>
                   <VictoryChart
-                    width={width - 80}
-                    height={200}
+                    width={width - 30}
+                    height={280}
                     theme={VictoryTheme.material}
-                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                    padding={{ top: 50, bottom: 70, left: 80, right: 50 }}
                   >
                     <VictoryAxis
                       dependentAxis
                       label="Reward"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
                         axisLabel: { fill: '#FFFFFF', fontSize: 12 },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
@@ -467,7 +535,7 @@ export default function RecommendationsScreen() {
                     <VictoryAxis
                       label="Training Step"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
                         axisLabel: { fill: '#FFFFFF', fontSize: 12 },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
@@ -477,16 +545,16 @@ export default function RecommendationsScreen() {
                       x="step"
                       y="reward"
                       style={{
-                        data: { stroke: '#22C55E', strokeWidth: 2 }
+                        data: { stroke: '#22C55E', strokeWidth: 1.5, strokeDasharray: '2,2' }
                       }}
                     />
                     <VictoryScatter
                       data={layer3Data.rewardConvergence}
                       x="step"
                       y="reward"
-                      size={2}
+                      size={1.5}
                       style={{
-                        data: { fill: '#22C55E' }
+                        data: { fill: '#22C55E', opacity: 0.7 }
                       }}
                     />
                   </VictoryChart>
@@ -506,16 +574,16 @@ export default function RecommendationsScreen() {
                 </View>
                 <View style={styles.chartContainer}>
                   <VictoryChart
-                    width={width - 80}
-                    height={200}
+                    width={width - 30}
+                    height={280}
                     theme={VictoryTheme.material}
-                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                    padding={{ top: 50, bottom: 70, left: 80, right: 50 }}
                   >
                     <VictoryAxis
                       dependentAxis
                       label="Value"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
                         axisLabel: { fill: '#FFFFFF', fontSize: 12 },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
@@ -523,7 +591,7 @@ export default function RecommendationsScreen() {
                     <VictoryAxis
                       label="Time (hours)"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
                         axisLabel: { fill: '#FFFFFF', fontSize: 12 },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
@@ -534,7 +602,7 @@ export default function RecommendationsScreen() {
                         x="time"
                         y="temperature"
                         style={{
-                          data: { stroke: '#FF6B6B', strokeWidth: 2 }
+                          data: { stroke: '#FF6B6B', strokeWidth: 1.8, strokeDasharray: '4,2' }
                         }}
                       />
                       <VictoryLine
@@ -542,7 +610,7 @@ export default function RecommendationsScreen() {
                         x="time"
                         y="lightIntensity"
                         style={{
-                          data: { stroke: '#4ECDC4', strokeWidth: 2 }
+                          data: { stroke: '#4ECDC4', strokeWidth: 1.6, strokeDasharray: '3,3' }
                         }}
                       />
                       <VictoryLine
@@ -550,7 +618,7 @@ export default function RecommendationsScreen() {
                         x="time"
                         y="noiseLevel"
                         style={{
-                          data: { stroke: '#45B7D1', strokeWidth: 2 }
+                          data: { stroke: '#45B7D1', strokeWidth: 1.7, strokeDasharray: '2,4' }
                         }}
                       />
                     </VictoryGroup>
@@ -585,16 +653,16 @@ export default function RecommendationsScreen() {
                 </View>
                 <View style={styles.chartContainer}>
                   <VictoryChart
-                    width={width - 80}
-                    height={200}
+                    width={width - 30}
+                    height={280}
                     theme={VictoryTheme.material}
-                    padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+                    padding={{ top: 50, bottom: 70, left: 80, right: 50 }}
                   >
                     <VictoryAxis
                       dependentAxis
                       label="Sleep Score"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
                         axisLabel: { fill: '#FFFFFF', fontSize: 12 },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
@@ -602,7 +670,7 @@ export default function RecommendationsScreen() {
                     <VictoryAxis
                       label="Day"
                       style={{
-                        axis: { stroke: '#EBEBF599' },
+                        axis: { stroke: '#EBEBF599', strokeWidth: 1.5, strokeDasharray: '5,5' },
                         axisLabel: { fill: '#FFFFFF', fontSize: 12 },
                         tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                       }}
@@ -612,8 +680,9 @@ export default function RecommendationsScreen() {
                       x="day"
                       y="score"
                       style={{
-                        data: { fill: '#A855F7' }
+                        data: { fill: '#A855F7', opacity: 0.8 }
                       }}
+                      barWidth={8}
                     />
                   </VictoryChart>
                 </View>
@@ -709,7 +778,7 @@ const styles = StyleSheet.create({
     color: '#EBEBF599',
   },
   filterButtonTextActive: {
-    color: '#000000',
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   filterButtonTextDisabled: {
@@ -725,7 +794,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(56, 56, 58, 0.8)',
   },
   filterCountActive: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
   filterCountDisabled: {
     backgroundColor: 'rgba(56, 56, 58, 0.4)',
@@ -736,7 +805,7 @@ const styles = StyleSheet.create({
     color: '#EBEBF599',
   },
   filterCountTextActive: {
-    color: '#000000',
+    color: '#FFFFFF',
   },
   filterCountTextDisabled: {
     color: '#EBEBF54D',
@@ -756,6 +825,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 20,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
   },
   analyticsCardGradient: {
     padding: 20,
@@ -773,6 +849,10 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     alignItems: 'center',
+    padding: 15,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 8,
+    margin: 8,
   },
   legendContainer: {
     flexDirection: 'row',

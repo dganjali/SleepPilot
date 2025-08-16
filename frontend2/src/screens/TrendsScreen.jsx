@@ -77,17 +77,17 @@ export default function TrendsScreen() {
           {/* Sound Level Chart */}
           <View style={styles.chartContainer}>
             <VictoryChart
-              width={width - 80}
-              height={200}
+              width={width - 40}
+              height={280}
               theme={VictoryTheme.material}
-              padding={{ top: 20, bottom: 40, left: 50, right: 20 }}
+              padding={{ top: 60, bottom: 80, left: 120, right: 60 }}
             >
               <VictoryAxis
                 dependentAxis
                 label="Sound Level (dB)"
                 style={{
                   axis: { stroke: '#EBEBF599' },
-                  axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                  axisLabel: { fill: '#FFFFFF', fontSize: 12, fontWeight: '600' },
                   tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                 }}
               />
@@ -95,7 +95,7 @@ export default function TrendsScreen() {
                 label="Time (hours)"
                 style={{
                   axis: { stroke: '#EBEBF599' },
-                  axisLabel: { fill: '#FFFFFF', fontSize: 12 },
+                  axisLabel: { fill: '#FFFFFF', fontSize: 12, fontWeight: '600' },
                   tickLabels: { fill: '#EBEBF599', fontSize: 10 }
                 }}
               />
@@ -121,21 +121,25 @@ export default function TrendsScreen() {
           {/* Sound Metrics */}
           {audioData && (
             <View style={styles.soundMetrics}>
-              <View style={styles.soundMetricItem}>
-                <Text style={styles.metricLabel}>Peak Level</Text>
-                <Text style={styles.metricValue}>{audioData.peakLevel?.toFixed(1) || '--'} dB</Text>
+              <View style={styles.soundMetricRow}>
+                <View style={styles.soundMetricItem}>
+                  <Text style={styles.metricLabel}>Peak Level</Text>
+                  <Text style={styles.metricValue}>{audioData.peakLevel?.toFixed(1) || '--'} dB</Text>
+                </View>
+                <View style={styles.soundMetricItem}>
+                  <Text style={styles.metricLabel}>Average Level</Text>
+                  <Text style={styles.metricValue}>{audioData.averageLevel?.toFixed(1) || '--'} dB</Text>
+                </View>
               </View>
-              <View style={styles.soundMetricItem}>
-                <Text style={styles.metricLabel}>Average Level</Text>
-                <Text style={styles.metricValue}>{audioData.averageLevel?.toFixed(1) || '--'} dB</Text>
-              </View>
-              <View style={styles.soundMetricItem}>
-                <Text style={styles.metricLabel}>Quiet Periods</Text>
-                <Text style={styles.metricValue}>{audioData.quietPeriods || '--'}%</Text>
-              </View>
-              <View style={styles.soundMetricItem}>
-                <Text style={styles.metricLabel}>Noise Events</Text>
-                <Text style={styles.metricValue}>{audioData.noiseEvents || '--'}</Text>
+              <View style={styles.soundMetricRow}>
+                <View style={styles.soundMetricItem}>
+                  <Text style={styles.metricLabel}>Quiet Periods</Text>
+                  <Text style={styles.metricValue}>{audioData.quietPeriods || '--'}%</Text>
+                </View>
+                <View style={styles.soundMetricItem}>
+                  <Text style={styles.metricLabel}>Noise Events</Text>
+                  <Text style={styles.metricValue}>{audioData.noiseEvents || '--'}</Text>
+                </View>
               </View>
             </View>
           )}
@@ -408,11 +412,21 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginLeft: 12,
   },
+  chartContainer: {
+    alignItems: 'center',
+    padding: 10,
+    marginVertical: 10,
+  },
 
   soundMetrics: {
+    flexDirection: 'column',
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  soundMetricRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 15,
+    marginBottom: 15,
   },
   soundMetricItem: {
     alignItems: 'center',
@@ -428,9 +442,68 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginTop: 2,
   },
+  additionalMetrics: {
+    marginTop: 25,
+    paddingTop: 25,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: 10,
+  },
+  metricRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  metricItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
   eventsSection: {
     paddingHorizontal: 24,
     marginBottom: 24,
+  },
+  eventsCard: {
+    backgroundColor: 'rgba(44, 44, 46, 0.8)',
+    borderRadius: 16,
+    padding: 20,
+  },
+  eventsCardGradient: {
+    borderRadius: 16,
+    padding: 20,
+  },
+  eventsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  eventsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginLeft: 12,
+  },
+  eventsContent: {
+    paddingLeft: 10,
+  },
+  eventRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  eventLabel: {
+    fontSize: 14,
+    color: '#EBEBF599',
+  },
+  eventValue: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#FFFFFF',
+  },
+  noDataText: {
+    fontSize: 14,
+    color: '#EBEBF599',
+    textAlign: 'center',
+    paddingVertical: 20,
   },
   sleepScoreHeader: {
     paddingHorizontal: 24,

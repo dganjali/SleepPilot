@@ -345,10 +345,7 @@ export default function LandingScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Interactive Hint */}
-      <Text style={styles.interactiveHint}>
-        Move your finger near the clouds to interact with them
-      </Text>
+
     </View>
   );
 }
@@ -472,14 +469,5 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     letterSpacing: 1,
   },
-  interactiveHint: {
-    position: 'absolute',
-    bottom: 40,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-    fontSize: 14,
-    color: '#9CA3AF',
-    zIndex: 2,
-  },
+
 });
