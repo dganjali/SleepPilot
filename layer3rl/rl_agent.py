@@ -136,25 +136,43 @@ class SleepOptimizationAgent:
     def _create_model(self, model_path: Optional[str] = None):
         """Create or load the RL model."""
         if model_path and os.path.exists(model_path):
+            # Check if model_path is a directory or file
+            if os.path.isdir(model_path):
+                # Look for model file in directory
+                model_file = os.path.join(model_path, f"final_model_{self.algorithm}")
+                if not os.path.exists(model_file):
+                    # Try alternative names
+                    model_file = os.path.join(model_path, f"model_{self.algorithm}")
+                    if not os.path.exists(model_file):
+                        # Try to find any model file
+                        for file in os.listdir(model_path):
+                            if file.startswith("model_") or file.startswith("final_model_") or file.endswith(".zip"):
+                                model_file = os.path.join(model_path, file)
+                                break
+                        else:
+                            raise ValueError(f"No model file found in {model_path}")
+            else:
+                model_file = model_path
+            
             # Load pre-trained model
             if self.algorithm == "PPO":
-                model = PPO.load(model_path, env=self.vec_env, device=self.device)
+                model = PPO.load(model_file, env=self.vec_env, device=self.device)
             elif self.algorithm == "SAC":
-                model = SAC.load(model_path, env=self.vec_env, device=self.device)
+                model = SAC.load(model_file, env=self.vec_env, device=self.device)
             elif self.algorithm == "TD3":
-                model = TD3.load(model_path, env=self.vec_env, device=self.device)
+                model = TD3.load(model_file, env=self.vec_env, device=self.device)
             else:
                 raise ValueError(f"Unsupported algorithm: {self.algorithm}")
         else:
-            # Create new model
+            # Create new model with smaller networks for faster training
             if self.algorithm == "PPO":
                 model = PPO(
                     "MlpPolicy",
                     self.vec_env,
-                    learning_rate=3e-4,
-                    n_steps=2048,
-                    batch_size=64,
-                    n_epochs=10,
+                    learning_rate=5e-4,  # Faster learning
+                    n_steps=1024,  # Smaller steps
+                    batch_size=32,  # Smaller batch
+                    n_epochs=5,  # Fewer epochs
                     gamma=0.99,
                     gae_lambda=0.95,
                     clip_range=0.2,
@@ -168,19 +186,19 @@ class SleepOptimizationAgent:
                     target_kl=None,
                     tensorboard_log=None,
                     policy_kwargs=dict(
-                        net_arch=dict(pi=[256, 256], vf=[256, 256])
+                        net_arch=dict(pi=[64, 64], vf=[64, 64])  # Smaller networks
                     ),
-                    verbose=1,
+                    verbose=0,  # Less verbose for faster training
                     device=self.device
                 )
             elif self.algorithm == "SAC":
                 model = SAC(
                     "MlpPolicy",
                     self.vec_env,
-                    learning_rate=3e-4,
-                    buffer_size=1000000,
-                    learning_starts=100,
-                    batch_size=256,
+                    learning_rate=5e-4,  # Faster learning
+                    buffer_size=50000,  # Smaller buffer
+                    learning_starts=50,  # Start learning earlier
+                    batch_size=128,  # Smaller batch
                     tau=0.005,
                     gamma=0.99,
                     train_freq=1,
@@ -196,19 +214,19 @@ class SleepOptimizationAgent:
                     sde_sample_freq=-1,
                     use_sde_at_warmup=False,
                     policy_kwargs=dict(
-                        net_arch=dict(pi=[256, 256], qf=[256, 256])
+                        net_arch=dict(pi=[64, 64], qf=[64, 64])  # Smaller networks
                     ),
-                    verbose=1,
+                    verbose=0,  # Less verbose for faster training
                     device=self.device
                 )
             elif self.algorithm == "TD3":
                 model = TD3(
                     "MlpPolicy",
                     self.vec_env,
-                    learning_rate=3e-4,
-                    buffer_size=1000000,
-                    learning_starts=100,
-                    batch_size=100,
+                    learning_rate=5e-4,  # Faster learning
+                    buffer_size=50000,  # Smaller buffer
+                    learning_starts=50,  # Start learning earlier
+                    batch_size=64,  # Smaller batch
                     tau=0.005,
                     gamma=0.99,
                     train_freq=1,
@@ -221,9 +239,9 @@ class SleepOptimizationAgent:
                     target_policy_noise=0.2,
                     target_noise_clip=0.5,
                     policy_kwargs=dict(
-                        net_arch=dict(pi=[256, 256], qf=[256, 256])
+                        net_arch=dict(pi=[64, 64], qf=[64, 64])  # Smaller networks
                     ),
-                    verbose=1,
+                    verbose=0,  # Less verbose for faster training
                     device=self.device
                 )
             else:
@@ -272,6 +290,21 @@ class SleepOptimizationAgent:
             # Save the environment normalization
             vec_normalize_path = os.path.join(save_path, f"vec_normalize_{self.algorithm}")
             self.vec_env.save(vec_normalize_path)
+            
+            # Save user profile
+            user_profile_path = os.path.join(save_path, "user_profile.json")
+            with open(user_profile_path, 'w') as f:
+                # Convert dataclass to dict, handling None values
+                user_dict = {}
+                for field, value in self.user_profile.__dict__.items():
+                    if value is not None:
+                        user_dict[field] = value
+                json.dump(user_dict, f, indent=2)
+            
+            # Save training history
+            history_path = os.path.join(save_path, "training_history.json")
+            with open(history_path, 'w') as f:
+                json.dump(self.training_history, f, indent=2)
         
         return self.training_history
     
@@ -366,18 +399,27 @@ class SleepOptimizationAgent:
             action, _ = self.model.predict(obs, deterministic=True)
             obs, reward, terminated, truncated, info = self.env.step(action)
             
-            episode_sleep_scores.append(info['sleep_score'])
+            # Handle Monitor wrapper
+            if hasattr(self.env, 'env') and hasattr(self.env.env, 'get_info'):
+                env_info = self.env.env.get_info()
+            else:
+                env_info = info
+            
+            episode_sleep_scores.append(env_info.get('sleep_score', 0))
             
             # Record the settings at the best sleep score
-            if step == 0 or info['sleep_score'] > max(episode_sleep_scores[:-1]):
+            if step == 0 or env_info.get('sleep_score', 0) > max(episode_sleep_scores[:-1]):
+                # Get the underlying environment to access current_state
+                underlying_env = self.env.env if hasattr(self.env, 'env') else self.env
+                
                 optimal_settings = {
-                    'temperature': info['temperature'],
-                    'light_intensity': info['light_intensity'],
-                    'light_color_temp': self.env.current_state.light_color_temp,
-                    'noise_level': info['noise_level'],
-                    'noise_type': self.env.current_state.noise_type,
-                    'humidity': info['humidity'],
-                    'airflow': info['airflow']
+                    'temperature': env_info.get('temperature', 20.0),
+                    'light_intensity': env_info.get('light_intensity', 0.1),
+                    'light_color_temp': underlying_env.current_state.light_color_temp if hasattr(underlying_env, 'current_state') else 0.3,
+                    'noise_level': env_info.get('noise_level', 0.2),
+                    'noise_type': underlying_env.current_state.noise_type if hasattr(underlying_env, 'current_state') else 0.0,
+                    'humidity': env_info.get('humidity', 0.5),
+                    'airflow': env_info.get('airflow', 0.3)
                 }
             
             if terminated or truncated:
@@ -412,7 +454,12 @@ class SleepOptimizationAgent:
         # Save user profile
         user_profile_path = os.path.join(path, "user_profile.json")
         with open(user_profile_path, 'w') as f:
-            json.dump(self.user_profile.__dict__, f, indent=2)
+            # Convert dataclass to dict, handling None values
+            user_dict = {}
+            for field, value in self.user_profile.__dict__.items():
+                if value is not None:
+                    user_dict[field] = value
+            json.dump(user_dict, f, indent=2)
         
         # Save training history
         history_path = os.path.join(path, "training_history.json")
@@ -422,22 +469,30 @@ class SleepOptimizationAgent:
     @classmethod
     def load_model(cls, path: str, algorithm: str = "PPO") -> 'SleepOptimizationAgent':
         """Load a trained model."""
-        # Load user profile
-        user_profile_path = os.path.join(path, "user_profile.json")
-        with open(user_profile_path, 'r') as f:
-            user_data = json.load(f)
-        
-        user_profile = UserProfile(**user_data)
-        
-        # Create agent and load model
-        agent = cls(user_profile, algorithm=algorithm, model_path=path)
-        
-        # Load environment normalization
-        vec_normalize_path = os.path.join(path, f"vec_normalize_{algorithm}")
-        if os.path.exists(vec_normalize_path):
-            agent.vec_env = VecNormalize.load(vec_normalize_path, agent.vec_env)
-        
-        return agent
+        # Check if path is a directory or file
+        if os.path.isdir(path):
+            # Load user profile
+            user_profile_path = os.path.join(path, "user_profile.json")
+            if not os.path.exists(user_profile_path):
+                raise FileNotFoundError(f"User profile not found at {user_profile_path}")
+            
+            with open(user_profile_path, 'r') as f:
+                user_data = json.load(f)
+            
+            user_profile = UserProfile(**user_data)
+            
+            # Create agent and load model
+            agent = cls(user_profile, algorithm=algorithm, model_path=path)
+            
+            # Load environment normalization
+            vec_normalize_path = os.path.join(path, f"vec_normalize_{algorithm}")
+            if os.path.exists(vec_normalize_path):
+                agent.vec_env = VecNormalize.load(vec_normalize_path, agent.vec_env)
+            
+            return agent
+        else:
+            # If path is a file, try to load it directly
+            raise ValueError(f"Path {path} is not a directory. Please provide the directory containing the model files.")
 
 
 def train_multiple_users(user_profiles: List[UserProfile], 

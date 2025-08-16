@@ -132,10 +132,13 @@ def test_rl_agent():
         print("  ✓ Agent creation works")
         
         # Test short training (very short for testing)
-        with tempfile.TemporaryDirectory() as temp_dir:
+        test_dir = "test_agent"
+        os.makedirs(test_dir, exist_ok=True)
+        
+        try:
             training_history = agent.train(
                 total_timesteps=1000,  # Very short for testing
-                save_path=temp_dir,
+                save_path=test_dir,
                 eval_freq=500
             )
             
@@ -163,13 +166,19 @@ def test_rl_agent():
             print("  ✓ Agent recommendations work")
             
             # Test model saving and loading
-            agent.save_model(temp_dir)
+            agent.save_model(test_dir)
             
             # Test loading
-            loaded_agent = SleepOptimizationAgent.load_model(temp_dir, "PPO")
+            loaded_agent = SleepOptimizationAgent.load_model(test_dir, "PPO")
             assert loaded_agent.user_profile.user_id == user.user_id
             
             print("  ✓ Model saving and loading works")
+            
+        finally:
+            # Clean up test directory
+            if os.path.exists(test_dir):
+                import shutil
+                shutil.rmtree(test_dir)
         
         return True
         
@@ -191,14 +200,18 @@ def test_recommendation_engine():
         generator = SyntheticUserGenerator(seed=42)
         user = generator.generate_user_profile("rec_test_user")
         
-        with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a persistent directory for testing
+        test_dir = "test_models"
+        os.makedirs(test_dir, exist_ok=True)
+        
+        try:
             # Train a quick agent
             agent = SleepOptimizationAgent(user, algorithm="PPO")
-            agent.train(total_timesteps=1000, save_path=temp_dir)
-            agent.save_model(temp_dir)
+            agent.train(total_timesteps=1000, save_path=test_dir)
+            agent.save_model(test_dir)
             
             # Test recommendation engine
-            engine = create_recommendation_engine(temp_dir, "PPO")
+            engine = create_recommendation_engine(test_dir, "PPO")
             
             # Generate recommendations
             report = engine.generate_recommendations()
@@ -222,6 +235,12 @@ def test_recommendation_engine():
             assert isinstance(dict_report, dict)
             
             print("  ✓ Report export works")
+            
+        finally:
+            # Clean up test directory
+            if os.path.exists(test_dir):
+                import shutil
+                shutil.rmtree(test_dir)
         
         return True
         
@@ -303,14 +322,18 @@ def test_integration():
         generator = SyntheticUserGenerator(seed=42)
         user = generator.generate_user_profile("integration_test_user")
         
-        with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a persistent directory for testing
+        test_dir = "test_integration"
+        os.makedirs(test_dir, exist_ok=True)
+        
+        try:
             # 1. Create environment
             env = create_sleep_environment(user, episode_length=50)
             obs, info = env.reset()
             
             # 2. Train agent
             agent = SleepOptimizationAgent(user, algorithm="PPO")
-            agent.train(total_timesteps=1000, save_path=temp_dir)
+            agent.train(total_timesteps=1000, save_path=test_dir)
             
             # 3. Evaluate agent
             eval_results = agent.evaluate(n_eval_episodes=2)
@@ -319,7 +342,7 @@ def test_integration():
             recommendations = agent.get_recommendations()
             
             # 5. Use recommendation engine
-            engine = create_recommendation_engine(temp_dir, "PPO")
+            engine = create_recommendation_engine(test_dir, "PPO")
             report = engine.generate_recommendations()
             
             # 6. Verify consistency
@@ -341,6 +364,12 @@ def test_integration():
             assert report_with_env.user_id == user.user_id
             
             print("  ✓ Complete workflow integration works")
+            
+        finally:
+            # Clean up test directory
+            if os.path.exists(test_dir):
+                import shutil
+                shutil.rmtree(test_dir)
         
         return True
         

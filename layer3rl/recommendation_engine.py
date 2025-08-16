@@ -104,7 +104,25 @@ class RecommendationEngine:
     def _load_agent(self):
         """Load the trained RL agent."""
         try:
-            self.agent = SleepOptimizationAgent.load_model(self.model_path, self.algorithm)
+            # Check if model_path is a directory or file
+            if os.path.isdir(self.model_path):
+                # If it's a directory, look for the model file
+                model_file = os.path.join(self.model_path, f"model_{self.algorithm}")
+                if os.path.exists(model_file):
+                    self.agent = SleepOptimizationAgent.load_model(self.model_path, self.algorithm)
+                else:
+                    # Try to find any model file in the directory
+                    for file in os.listdir(self.model_path):
+                        if file.startswith("model_") or file.endswith(".zip"):
+                            model_file = os.path.join(self.model_path, file)
+                            break
+                    else:
+                        raise ValueError(f"No model file found in {self.model_path}")
+                    self.agent = SleepOptimizationAgent.load_model(self.model_path, self.algorithm)
+            else:
+                # If it's a file, load directly
+                self.agent = SleepOptimizationAgent.load_model(self.model_path, self.algorithm)
+            
             self.user_profile = self.agent.user_profile
         except Exception as e:
             raise ValueError(f"Failed to load agent from {self.model_path}: {e}")

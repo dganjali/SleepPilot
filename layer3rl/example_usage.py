@@ -53,7 +53,9 @@ def train_agent_demo(user):
     
     print(f"Training agent for user: {user.user_id}")
     print(f"Algorithm: {agent.algorithm}")
-    print(f"Episode length: {agent.env.episode_length}")
+    # Get episode length from underlying environment
+    underlying_env = agent.env.env if hasattr(agent.env, 'env') else agent.env
+    print(f"Episode length: {underlying_env.episode_length}")
     
     # Train the agent
     print("\nStarting training...")

@@ -1,0 +1,29 @@
+Sleep Environment Optimization Summary Report
+==================================================
+
+User ID: demo_user_001
+Generated: 2025-08-15T21:47:29.343263
+
+SLEEP QUALITY ANALYSIS
+-------------------------
+Baseline Score: 62.0
+Optimized Score: 96.1
+Improvement: +34.1 points
+Improvement: 55.0%
+
+RECOMMENDED SETTINGS
+-------------------------
+Temperature: 20.0°C
+Light Intensity: 0.22
+Noise Level: 0.23
+Humidity: 0.36
+Airflow: 0.26
+
+PRIORITY FACTORS
+-------------------------
+- Temperature
+
+IMPLEMENTATION NOTES
+-------------------------
+- Consider blackout curtains or eye mask
+- White or pink noise recommended for sleep

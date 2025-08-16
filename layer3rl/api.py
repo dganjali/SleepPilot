@@ -49,7 +49,7 @@ training_status = {}
 class UserProfileRequest(BaseModel):
     user_id: Optional[str] = None
     age: Optional[int] = Field(None, ge=18, le=100)
-    gender: Optional[str] = Field(None, regex="^(male|female|other)$")
+    gender: Optional[str] = Field(None, pattern="^(male|female|other)$")
     weight: Optional[float] = Field(None, gt=0)
     height: Optional[float] = Field(None, gt=0)
     temp_optimal: Optional[float] = Field(None, ge=10, le=30)
@@ -81,7 +81,7 @@ class UserProfileResponse(BaseModel):
 
 class TrainingRequest(BaseModel):
     user_id: str
-    algorithm: str = Field("PPO", regex="^(PPO|SAC|TD3)$")
+    algorithm: str = Field("PPO", pattern="^(PPO|SAC|TD3)$")
     total_timesteps: int = Field(50000, ge=1000, le=1000000)
 
 
