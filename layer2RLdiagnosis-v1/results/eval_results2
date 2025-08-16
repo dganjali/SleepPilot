@@ -1,0 +1,159 @@
+{
+  "mean_reward": "0.26200008",
+  "std_reward": "0.23844504",
+  "mean_episode_length": 7.6,
+  "n_episodes": 10,
+  "mean_accuracy": 0.5700000000000001,
+  "mean_ece": 0.3499999988079071,
+  "mean_severity": 0.0,
+  "mean_ahi_score": 0.0,
+  "mean_confidence": "0.1",
+  "patient_metrics": {
+    "patient_14": [
+      {
+        "patient_id": "patient_14",
+        "accuracy": 0.0,
+        "ece": 0.8999999985098839,
+        "mean_confidence": "0.1",
+        "n_predictions": 4,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.6666666666666666,
+        "apnea_frequency_per_hour": 0.0
+      },
+      {
+        "patient_id": "patient_14",
+        "accuracy": 0.0,
+        "ece": 0.8999999985098839,
+        "mean_confidence": "0.1",
+        "n_predictions": 4,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.6666666666666666,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_10": [
+      {
+        "patient_id": "patient_10",
+        "accuracy": 0.6666666666666666,
+        "ece": 0.23333333184321722,
+        "mean_confidence": "0.1",
+        "n_predictions": 3,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.5,
+        "apnea_frequency_per_hour": 0.0
+      },
+      {
+        "patient_id": "patient_10",
+        "accuracy": 0.6666666666666666,
+        "ece": 0.23333333184321722,
+        "mean_confidence": "0.1",
+        "n_predictions": 3,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.5,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_7": [
+      {
+        "patient_id": "patient_7",
+        "accuracy": 0.75,
+        "ece": 0.14999999850988388,
+        "mean_confidence": "0.1",
+        "n_predictions": 4,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.6666666666666666,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_13": [
+      {
+        "patient_id": "patient_13",
+        "accuracy": 0.6666666666666666,
+        "ece": 0.23333333184321722,
+        "mean_confidence": "0.1",
+        "n_predictions": 3,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.5,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_9": [
+      {
+        "patient_id": "patient_9",
+        "accuracy": 0.75,
+        "ece": 0.14999999850988388,
+        "mean_confidence": "0.1",
+        "n_predictions": 4,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.6666666666666666,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_12": [
+      {
+        "patient_id": "patient_12",
+        "accuracy": 0.8,
+        "ece": 0.09999999850988389,
+        "mean_confidence": "0.1",
+        "n_predictions": 5,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.8333333333333334,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_6": [
+      {
+        "patient_id": "patient_6",
+        "accuracy": 1.0,
+        "ece": 0.10000000149011612,
+        "mean_confidence": "0.1",
+        "n_predictions": 3,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.5,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ],
+    "patient_5": [
+      {
+        "patient_id": "patient_5",
+        "accuracy": 0.4,
+        "ece": 0.49999999850988386,
+        "mean_confidence": "0.1",
+        "n_predictions": 5,
+        "n_apnea_events": "0",
+        "severity_score": 0.0,
+        "ahi_score": 0.0,
+        "apnea_event_details": [],
+        "total_duration_minutes": 0.8333333333333334,
+        "apnea_frequency_per_hour": 0.0
+      }
+    ]
+  }
+}
