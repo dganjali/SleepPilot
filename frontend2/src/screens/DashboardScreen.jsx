@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,85 +6,183 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { 
-  Moon, 
-  Activity, 
-  Volume2, 
-  AlertTriangle, 
-  TrendingUp, 
-  Brain 
+  Upload, 
+  Video, 
+  Brain, 
+  Zap,
+  Play,
+  Clock,
+  Activity
 } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
 export default function DashboardScreen() {
-  const sleepScore = 87;
-  const sleepDuration = '7h 23m';
-  const sleepEfficiency = '94%';
-  const deepSleep = '2h 15m';
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [hasUploaded, setHasUploaded] = useState(false);
 
-  const quickInsights = [
-    {
-      title: 'Sleep Quality Improved',
-      description: 'Your sleep score increased by 12 points this week',
-      trend: 'up',
-      icon: TrendingUp,
-      color: '#34C759',
-    },
-    {
-      title: 'Deep Sleep Optimal',
-      description: 'You\'re getting the recommended amount of deep sleep',
-      trend: 'stable',
-      icon: Brain,
-      color: '#A890FE',
-    },
-    {
-      title: 'Room Temperature',
-      description: 'Consider lowering room temperature by 2°C',
-      trend: 'down',
-      icon: Activity,
-      color: '#FF9500',
-    },
-  ];
+  const handleUploadVideo = () => {
+    Alert.alert(
+      'Upload Sleep Video',
+      'This will upload your sleep video clip for AI analysis and RL processing.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Upload',
+          onPress: () => {
+            // Simulate upload process
+            setIsProcessing(true);
+            setHasUploaded(true);
+            
+            // Simulate processing time
+            setTimeout(() => {
+              setIsProcessing(false);
+            }, 3000);
+          },
+        },
+      ]
+    );
+  };
 
-  const metrics = [
-    { label: 'Sleep Score', value: sleepScore, unit: '', icon: Moon, color: '#A890FE' },
-    { label: 'Duration', value: sleepDuration, unit: '', icon: Activity, color: '#34C759' },
-    { label: 'Efficiency', value: sleepEfficiency, unit: '', icon: TrendingUp, color: '#FF9500' },
-    { label: 'Deep Sleep', value: deepSleep, unit: '', icon: Brain, color: '#C9B9FF' },
-  ];
-
-  const renderMetricCard = (metric) => {
-    const IconComponent = metric.icon;
-    return (
-      <View key={metric.label} style={styles.metricCard}>
-        <View style={styles.metricHeader}>
-          <IconComponent size={20} color={metric.color} />
-          <Text style={styles.metricLabel}>{metric.label}</Text>
+  const renderUploadSection = () => (
+    <View style={styles.uploadSection}>
+      <LinearGradient
+        colors={['rgba(139, 92, 246, 0.2)', 'rgba(167, 139, 250, 0.1)']}
+        style={styles.uploadCard}
+      >
+        <View style={styles.uploadContent}>
+          <View style={styles.uploadIcon}>
+            <Video size={40} color="#8B5CF6" />
+          </View>
+          <Text style={styles.uploadTitle}>Upload Sleep Video</Text>
+          <Text style={styles.uploadDescription}>
+            Record a short clip of your sleep environment or upload an existing video for AI analysis
+          </Text>
+          
+          {!hasUploaded ? (
+            <TouchableOpacity 
+              style={styles.uploadButton} 
+              onPress={handleUploadVideo}
+              disabled={isProcessing}
+            >
+              <LinearGradient
+                colors={['#8B5CF6', '#A78BFA']}
+                style={styles.uploadButtonGradient}
+              >
+                <Upload size={20} color="#FFFFFF" />
+                <Text style={styles.uploadButtonText}>
+                  {isProcessing ? 'Processing...' : 'Choose Video'}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.processingStatus}>
+              <View style={styles.statusRow}>
+                <Activity size={20} color="#8B5CF6" />
+                <Text style={styles.statusText}>Video uploaded successfully</Text>
+              </View>
+              <View style={styles.statusRow}>
+                <Brain size={20} color="#8B5CF6" />
+                <Text style={styles.statusText}>AI analysis in progress</Text>
+              </View>
+              <View style={styles.statusRow}>
+                <Zap size={20} color="#8B5CF6" />
+                <Text style={styles.statusText}>RL model processing</Text>
+              </View>
+            </View>
+          )}
         </View>
-        <Text style={styles.metricValue}>
-          {metric.value}
-          {metric.unit && <Text style={styles.metricUnit}>{metric.unit}</Text>}
+      </LinearGradient>
+    </View>
+  );
+
+  const renderDemoInfo = () => (
+    <View style={styles.demoSection}>
+      <Text style={styles.sectionTitle}>How It Works</Text>
+      
+      <View style={styles.infoCard}>
+        <View style={styles.infoRow}>
+          <View style={styles.infoIcon}>
+            <Video size={24} color="#8B5CF6" />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoTitle}>1. Upload Sleep Video</Text>
+            <Text style={styles.infoDescription}>
+              Record or upload a video clip of your sleep environment
+            </Text>
+          </View>
+        </View>
+        
+        <View style={styles.infoRow}>
+          <View style={styles.infoIcon}>
+            <Brain size={24} color="#8B5CF6" />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoTitle}>2. AI Analysis</Text>
+            <Text style={styles.infoDescription}>
+              Our AI analyzes sleep patterns, environment factors, and quality indicators
+            </Text>
+          </View>
+        </View>
+        
+        <View style={styles.infoRow}>
+          <View style={styles.infoIcon}>
+            <Zap size={24} color="#8B5CF6" />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoTitle}>3. RL Processing</Text>
+            <Text style={styles.infoDescription}>
+              Reinforcement learning models optimize your sleep environment in real-time
+            </Text>
+          </View>
+        </View>
+        
+        <View style={styles.infoRow}>
+          <View style={styles.infoIcon}>
+            <Play size={24} color="#8B5CF6" />
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoTitle}>4. Live Optimization</Text>
+            <Text style={styles.infoDescription}>
+              Get real-time recommendations and automated environment adjustments
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderBackendInfo = () => (
+    <View style={styles.backendSection}>
+      <Text style={styles.sectionTitle}>Backend Processing</Text>
+      
+      <View style={styles.backendCard}>
+        <View style={styles.backendHeader}>
+          <Brain size={24} color="#8B5CF6" />
+          <Text style={styles.backendTitle}>Layer3RL Engine</Text>
+        </View>
+        <Text style={styles.backendDescription}>
+          Your sleep video is processed by our advanced reinforcement learning system located in the layer3rl backend. 
+          This system continuously learns and optimizes your sleep environment based on real-time data.
         </Text>
-      </View>
-    );
-  };
-
-  const renderQuickInsight = (insight, index) => {
-    const IconComponent = insight.icon;
-    return (
-      <View key={index} style={styles.insightCard}>
-        <View style={styles.insightHeader}>
-          <IconComponent size={20} color={insight.color} />
-          <Text style={styles.insightTitle}>{insight.title}</Text>
+        
+        <View style={styles.backendFeatures}>
+          <Text style={styles.featureText}>• Real-time video analysis</Text>
+          <Text style={styles.featureText}>• Environment optimization</Text>
+          <Text style={styles.featureText}>• Sleep quality prediction</Text>
+          <Text style={styles.featureText}>• Adaptive learning algorithms</Text>
         </View>
-        <Text style={styles.insightDescription}>{insight.description}</Text>
       </View>
-    );
-  };
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,65 +190,19 @@ export default function DashboardScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Dashboard</Text>
-          <Text style={styles.headerSubtitle}>Good morning! Here's your sleep summary</Text>
+          <Text style={styles.headerSubtitle}>
+            Upload your sleep video for AI-powered analysis and optimization
+          </Text>
         </View>
 
-        {/* Sleep Score Gauge */}
-        <View style={styles.scoreSection}>
-          <LinearGradient
-            colors={['rgba(168, 144, 254, 0.2)', 'rgba(201, 185, 255, 0.1)']}
-            style={styles.scoreCard}
-          >
-            <View style={styles.scoreContent}>
-              <View style={styles.scoreCircle}>
-                <Text style={styles.scoreNumber}>{sleepScore}</Text>
-                <Text style={styles.scoreLabel}>Sleep Score</Text>
-              </View>
-              <View style={styles.scoreDetails}>
-                <Text style={styles.scoreDescription}>
-                  Excellent sleep quality! You're well-rested and ready for the day.
-                </Text>
-                <TouchableOpacity style={styles.viewDetailsButton}>
-                  <Text style={styles.viewDetailsText}>View Details</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </LinearGradient>
-        </View>
+        {/* Upload Section */}
+        {renderUploadSection()}
 
-        {/* Metrics Grid */}
-        <View style={styles.metricsSection}>
-          <Text style={styles.sectionTitle}>Today's Metrics</Text>
-          <View style={styles.metricsGrid}>
-            {metrics.map(renderMetricCard)}
-          </View>
-        </View>
+        {/* Demo Info */}
+        {renderDemoInfo()}
 
-        {/* Quick Insights */}
-        <View style={styles.insightsSection}>
-          <Text style={styles.sectionTitle}>Quick Insights</Text>
-          <View style={styles.insightsList}>
-            {quickInsights.map(renderQuickInsight)}
-          </View>
-        </View>
-
-        {/* Status Banner */}
-        <View style={styles.statusBanner}>
-          <LinearGradient
-            colors={['rgba(52, 199, 89, 0.2)', 'rgba(52, 199, 89, 0.1)']}
-            style={styles.bannerContent}
-          >
-            <View style={styles.bannerIcon}>
-              <AlertTriangle size={24} color="#34C759" />
-            </View>
-            <View style={styles.bannerText}>
-              <Text style={styles.bannerTitle}>All Systems Optimal</Text>
-              <Text style={styles.bannerDescription}>
-                Your sleep environment is perfectly configured for optimal rest
-              </Text>
-            </View>
-          </LinearGradient>
-        </View>
+        {/* Backend Info */}
+        {renderBackendInfo()}
       </ScrollView>
     </SafeAreaView>
   );
@@ -177,59 +229,66 @@ const styles = StyleSheet.create({
     color: '#EBEBF599',
     lineHeight: 22,
   },
-  scoreSection: {
+  uploadSection: {
     paddingHorizontal: 24,
     marginBottom: 32,
   },
-  scoreCard: {
+  uploadCard: {
     borderRadius: 20,
     padding: 24,
   },
-  scoreContent: {
-    flexDirection: 'row',
+  uploadContent: {
     alignItems: 'center',
   },
-  scoreCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: 'rgba(168, 144, 254, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 20,
-  },
-  scoreNumber: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  scoreLabel: {
-    fontSize: 12,
-    color: '#EBEBF599',
-    marginTop: 4,
-  },
-  scoreDetails: {
-    flex: 1,
-  },
-  scoreDescription: {
-    fontSize: 14,
-    color: '#EBEBF599',
-    lineHeight: 20,
+  uploadIcon: {
     marginBottom: 16,
   },
-  viewDetailsButton: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: 'rgba(168, 144, 254, 0.3)',
+  uploadTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  uploadDescription: {
+    fontSize: 16,
+    color: '#EBEBF599',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  uploadButton: {
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 12,
     borderRadius: 20,
   },
-  viewDetailsText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#A890FE',
+  uploadButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
   },
-  metricsSection: {
+  uploadButtonText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    marginLeft: 8,
+  },
+  processingStatus: {
+    marginTop: 20,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  statusText: {
+    fontSize: 14,
+    color: '#EBEBF599',
+    marginLeft: 8,
+  },
+  demoSection: {
     paddingHorizontal: 24,
     marginBottom: 32,
   },
@@ -239,91 +298,71 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 16,
   },
-  metricsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  metricCard: {
-    width: (width - 64) / 2,
+  infoCard: {
     backgroundColor: 'rgba(44, 44, 46, 0.8)',
     borderRadius: 16,
     padding: 20,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
   },
-  metricHeader: {
-    flexDirection: 'row',
+  infoIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
   },
-  metricLabel: {
-    fontSize: 14,
-    color: '#EBEBF599',
-    marginLeft: 8,
-  },
-  metricValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  metricUnit: {
-    fontSize: 16,
-    color: '#EBEBF599',
-  },
-  insightsSection: {
-    paddingHorizontal: 24,
-    marginBottom: 32,
-  },
-  insightsList: {
-    gap: 16,
-  },
-  insightCard: {
-    backgroundColor: 'rgba(44, 44, 46, 0.8)',
-    borderRadius: 16,
-    padding: 20,
-  },
-  insightHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  insightTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginLeft: 12,
-  },
-  insightDescription: {
-    fontSize: 14,
-    color: '#EBEBF599',
-    lineHeight: 20,
-    marginLeft: 32,
-  },
-  statusBanner: {
-    paddingHorizontal: 24,
-    marginBottom: 32,
-  },
-  bannerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    borderRadius: 16,
-  },
-  bannerIcon: {
-    marginRight: 16,
-  },
-  bannerText: {
+  infoContent: {
     flex: 1,
+    marginLeft: 16,
   },
-  bannerTitle: {
+  infoTitle: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
     marginBottom: 4,
   },
-  bannerDescription: {
+  infoDescription: {
     fontSize: 14,
     color: '#EBEBF599',
     lineHeight: 20,
+  },
+  backendSection: {
+    paddingHorizontal: 24,
+    marginBottom: 32,
+  },
+  backendCard: {
+    backgroundColor: 'rgba(44, 44, 46, 0.8)',
+    borderRadius: 16,
+    padding: 20,
+  },
+  backendHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  backendTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginLeft: 12,
+  },
+  backendDescription: {
+    fontSize: 14,
+    color: '#EBEBF599',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  backendFeatures: {
+    marginTop: 12,
+  },
+  featureText: {
+    fontSize: 14,
+    color: '#EBEBF599',
+    marginBottom: 8,
   },
 });
