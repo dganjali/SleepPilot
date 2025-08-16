@@ -1,0 +1,34 @@
+/* Basic web styles for React Native Web */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #020617;
+  color: #ffffff;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure React Native components render properly on web */
+[data-testid="web-safe-area-view"] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fix for React Native Web rendering issues */
+div[style*="flex: 1"] {
+  min-height: 0;
+}
+
+/* Ensure proper text rendering */
+span, div {
+  white-space: pre-wrap;
+}
