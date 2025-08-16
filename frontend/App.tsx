@@ -1,39 +1,44 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Platform, View } from 'react-native';
-import { AppNavigator } from './src/navigation/AppNavigator';
-import { WebCompatibleNavigator } from './src/navigation/WebCompatibleNavigator';
+import React, { useState } from 'react';
+import { Platform } from 'react-native';
 
 // Import CSS for web
 if (Platform.OS === 'web') {
   require('./web.css');
 }
 
-// Web-compatible wrapper component
-const WebSafeAreaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  if (Platform.OS === 'web') {
-    return <div style={{ height: '100vh', width: '100vw' }}>{children}</div>;
-  }
-  
-  // For native platforms, use SafeAreaProvider
-  const { SafeAreaProvider } = require('react-native-safe-area-context');
-  return <SafeAreaProvider>{children}</SafeAreaProvider>;
+// Landing page component
+const LandingPage: React.FC<{ onEnterApp: () => void }> = ({ onEnterApp }) => {
+  const { WebLandingPage } = require('./src/screens/WebLandingPage');
+  return <WebLandingPage onEnterApp={onEnterApp} />;
 };
 
-// Web-compatible StatusBar
-const WebStatusBar: React.FC = () => {
-  if (Platform.OS === 'web') {
-    return null; // StatusBar doesn't exist on web
-  }
+// Simple web-compatible app
+const WebApp: React.FC = () => {
+  const { WebSimpleNavigation } = require('./src/navigation/WebSimpleNavigation');
+  return <WebSimpleNavigation />;
+};
+
+// Native app with full navigation
+const NativeApp: React.FC = () => {
+  const { AppNavigator } = require('./src/navigation/AppNavigator');
+  const { WebCompatibleNavigator } = require('./src/navigation/WebCompatibleNavigator');
   
-  return <StatusBar style="light" />;
+  return (
+    <WebCompatibleNavigator>
+      <AppNavigator />
+    </WebCompatibleNavigator>
+  );
 };
 
 export default function App() {
-  return (
-    <WebSafeAreaProvider>
-      <WebStatusBar />
-      <AppNavigator />
-    </WebSafeAreaProvider>
-  );
+  const [showLandingPage, setShowLandingPage] = useState(true);
+
+  if (Platform.OS === 'web') {
+    if (showLandingPage) {
+      return <LandingPage onEnterApp={() => setShowLandingPage(false)} />;
+    }
+    return <WebApp />;
+  }
+  
+  return <NativeApp />;
 }
