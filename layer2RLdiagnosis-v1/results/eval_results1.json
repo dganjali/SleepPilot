@@ -1,0 +1,1030 @@
+{
+  "training": {
+    "status": "training_completed",
+    "total_timesteps": 500000
+  },
+  "validation": {
+    "mean_reward": "1.2670004",
+    "std_reward": "0.41025493",
+    "mean_episode_length": 13.82,
+    "n_episodes": 50,
+    "mean_accuracy": 0.46202813852813845,
+    "mean_ece": 0.4379718586406408,
+    "mean_severity": 0.0,
+    "patient_metrics": {
+      "patient_6": [
+        {
+          "patient_id": "patient_6",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_6",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_6",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_36": [
+        {
+          "patient_id": "patient_36",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_36",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_36",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_7": [
+        {
+          "patient_id": "patient_7",
+          "accuracy": 0.25,
+          "ece": 0.6499999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 4,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_11": [
+        {
+          "patient_id": "patient_11",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_31": [
+        {
+          "patient_id": "patient_31",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 4,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_31",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 4,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_31",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 4,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_25": [
+        {
+          "patient_id": "patient_25",
+          "accuracy": 0.14285714285714285,
+          "ece": 0.7571428482021604,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_25",
+          "accuracy": 0.14285714285714285,
+          "ece": 0.7571428482021604,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_25",
+          "accuracy": 0.14285714285714285,
+          "ece": 0.7571428482021604,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_15": [
+        {
+          "patient_id": "patient_15",
+          "accuracy": 0.5714285714285714,
+          "ece": 0.32857141963073183,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_15",
+          "accuracy": 0.5714285714285714,
+          "ece": 0.32857141963073183,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_16": [
+        {
+          "patient_id": "patient_16",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_16",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_16",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_18": [
+        {
+          "patient_id": "patient_18",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_18",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_9": [
+        {
+          "patient_id": "patient_9",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_24": [
+        {
+          "patient_id": "patient_24",
+          "accuracy": 0.3333333333333333,
+          "ece": 0.5666666651765505,
+          "mean_confidence": "0.1",
+          "n_predictions": 6,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_13": [
+        {
+          "patient_id": "patient_13",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_46": [
+        {
+          "patient_id": "patient_46",
+          "accuracy": 0.7142857142857143,
+          "ece": 0.185714276773589,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 14,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_35": [
+        {
+          "patient_id": "patient_35",
+          "accuracy": 0.5833333333333334,
+          "ece": 0.31666666517655057,
+          "mean_confidence": "0.1",
+          "n_predictions": 12,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_28": [
+        {
+          "patient_id": "patient_28",
+          "accuracy": 0.6,
+          "ece": 0.2999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 5,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_28",
+          "accuracy": 0.6,
+          "ece": 0.2999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 5,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_42": [
+        {
+          "patient_id": "patient_42",
+          "accuracy": 0.7,
+          "ece": 0.19999999850988387,
+          "mean_confidence": "0.1",
+          "n_predictions": 10,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_41": [
+        {
+          "patient_id": "patient_41",
+          "accuracy": 0.7777777777777778,
+          "ece": 0.1222222207321061,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_41",
+          "accuracy": 0.7777777777777778,
+          "ece": 0.1222222207321061,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_10": [
+        {
+          "patient_id": "patient_10",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_49": [
+        {
+          "patient_id": "patient_49",
+          "accuracy": 0.5555555555555556,
+          "ece": 0.3444444429543283,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_34": [
+        {
+          "patient_id": "patient_34",
+          "accuracy": 0.6,
+          "ece": 0.2999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 5,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_14": [
+        {
+          "patient_id": "patient_14",
+          "accuracy": 0.3333333333333333,
+          "ece": 0.5666666651765505,
+          "mean_confidence": "0.1",
+          "n_predictions": 6,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_45": [
+        {
+          "patient_id": "patient_45",
+          "accuracy": 0.8888888888888888,
+          "ece": 0.011111109620994986,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_38": [
+        {
+          "patient_id": "patient_38",
+          "accuracy": 0.6,
+          "ece": 0.2999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 5,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_20": [
+        {
+          "patient_id": "patient_20",
+          "accuracy": 0.4444444444444444,
+          "ece": 0.45555555406543946,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_2": [
+        {
+          "patient_id": "patient_2",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_2",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_22": [
+        {
+          "patient_id": "patient_22",
+          "accuracy": 0.375,
+          "ece": 0.5249999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 8,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_17": [
+        {
+          "patient_id": "patient_17",
+          "accuracy": 0.8,
+          "ece": 0.09999999850988389,
+          "mean_confidence": "0.1",
+          "n_predictions": 10,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_21": [
+        {
+          "patient_id": "patient_21",
+          "accuracy": 0.4,
+          "ece": 0.49999999850988386,
+          "mean_confidence": "0.1",
+          "n_predictions": 5,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_43": [
+        {
+          "patient_id": "patient_43",
+          "accuracy": 0.4,
+          "ece": 0.49999999850988386,
+          "mean_confidence": "0.1",
+          "n_predictions": 5,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_26": [
+        {
+          "patient_id": "patient_26",
+          "accuracy": 0.5714285714285714,
+          "ece": 0.32857141963073183,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_44": [
+        {
+          "patient_id": "patient_44",
+          "accuracy": 0.5555555555555556,
+          "ece": 0.3444444429543283,
+          "mean_confidence": "0.1",
+          "n_predictions": 9,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_4": [
+        {
+          "patient_id": "patient_4",
+          "accuracy": 0.6,
+          "ece": 0.2999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 10,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_1": [
+        {
+          "patient_id": "patient_1",
+          "accuracy": 0.5714285714285714,
+          "ece": 0.32857141963073183,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_30": [
+        {
+          "patient_id": "patient_30",
+          "accuracy": 0.2857142857142857,
+          "ece": 0.6142857053450176,
+          "mean_confidence": "0.10000001",
+          "n_predictions": 7,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_29": [
+        {
+          "patient_id": "patient_29",
+          "accuracy": 0.5454545454545454,
+          "ece": 0.3545454530553384,
+          "mean_confidence": "0.1",
+          "n_predictions": 11,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ]
+    }
+  },
+  "test": {
+    "mean_reward": 0.13580004163086415,
+    "std_reward": 0.14190268543991438,
+    "mean_episode_length": 3.18,
+    "n_episodes": 50,
+    "mean_accuracy": 0.4710144927536232,
+    "mean_ece": 0.49420289803242334,
+    "mean_severity": 0.0,
+    "patient_metrics": {
+      "patient_6": [
+        {
+          "patient_id": "patient_6",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_11": [
+        {
+          "patient_id": "patient_11",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_11",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_16": [
+        {
+          "patient_id": "patient_16",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_16",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_16",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_36": [
+        {
+          "patient_id": "patient_36",
+          "accuracy": 0.6666666666666666,
+          "ece": 0.23333333184321722,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_36",
+          "accuracy": 0.6666666666666666,
+          "ece": 0.23333333184321722,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_14": [
+        {
+          "patient_id": "patient_14",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_14",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_30": [
+        {
+          "patient_id": "patient_30",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_30",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_28": [
+        {
+          "patient_id": "patient_28",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_24": [
+        {
+          "patient_id": "patient_24",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_24",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_5": [
+        {
+          "patient_id": "patient_5",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_5",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_2": [
+        {
+          "patient_id": "patient_2",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_47": [
+        {
+          "patient_id": "patient_47",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_17": [
+        {
+          "patient_id": "patient_17",
+          "accuracy": 0.3333333333333333,
+          "ece": 0.5666666651765505,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_17",
+          "accuracy": 0.3333333333333333,
+          "ece": 0.5666666651765505,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_17",
+          "accuracy": 0.3333333333333333,
+          "ece": 0.5666666651765505,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_9": [
+        {
+          "patient_id": "patient_9",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_9",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_42": [
+        {
+          "patient_id": "patient_42",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_42",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_25": [
+        {
+          "patient_id": "patient_25",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_25",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_31": [
+        {
+          "patient_id": "patient_31",
+          "accuracy": 0.6666666666666666,
+          "ece": 0.23333333184321722,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_41": [
+        {
+          "patient_id": "patient_41",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_49": [
+        {
+          "patient_id": "patient_49",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_49",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_29": [
+        {
+          "patient_id": "patient_29",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_48": [
+        {
+          "patient_id": "patient_48",
+          "accuracy": 0.5,
+          "ece": 0.3999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_23": [
+        {
+          "patient_id": "patient_23",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_23",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_34": [
+        {
+          "patient_id": "patient_34",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_22": [
+        {
+          "patient_id": "patient_22",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        },
+        {
+          "patient_id": "patient_22",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_46": [
+        {
+          "patient_id": "patient_46",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_37": [
+        {
+          "patient_id": "patient_37",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_32": [
+        {
+          "patient_id": "patient_32",
+          "accuracy": 0.0,
+          "ece": 0.8999999985098839,
+          "mean_confidence": "0.1",
+          "n_predictions": 1,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_1": [
+        {
+          "patient_id": "patient_1",
+          "accuracy": 1.0,
+          "ece": 0.10000000149011612,
+          "mean_confidence": "0.1",
+          "n_predictions": 2,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_40": [
+        {
+          "patient_id": "patient_40",
+          "accuracy": 0.6666666666666666,
+          "ece": 0.23333333184321722,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_4": [
+        {
+          "patient_id": "patient_4",
+          "accuracy": 0.6666666666666666,
+          "ece": 0.23333333184321722,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ],
+      "patient_27": [
+        {
+          "patient_id": "patient_27",
+          "accuracy": 0.3333333333333333,
+          "ece": 0.5666666651765505,
+          "mean_confidence": "0.1",
+          "n_predictions": 3,
+          "n_apnea_events": "0",
+          "severity_score": 0.0
+        }
+      ]
+    }
+  },
+  "data_info": {
+    "train_samples": 700,
+    "val_samples": 150,
+    "test_samples": 150,
+    "train_patients": 50,
+    "val_patients": 48,
+    "test_patients": 49
+  }
+}
