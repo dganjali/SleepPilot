@@ -1,5 +1,0 @@
-librosa
-scipy
-numpy
-cv2
-pyaudio
